@@ -117,4 +117,7 @@ void set_kernel_stack(uintptr_t stack) {
   #endif
 }
 
+#undef ENTRY 
+
+
 #endif

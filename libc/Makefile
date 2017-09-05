@@ -14,8 +14,11 @@ LIBK_CFLAGS:=$(CFLAGS)
 LIBK_CPPFLAGS:=$(CPPFLAGS) -D__is_libk
 
 FREEOBJS=\
+ src/ctypes.o\
+ src/itoa.o\
  src/string.o\
  src/stdio.o\
+
 
 
 LIBK_OBJS=$(FREEOBJS:.o=.libk.o)

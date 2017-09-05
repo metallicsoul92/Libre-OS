@@ -24,7 +24,10 @@ boot.o\
 crti.o\
 crtn.o\
 tss.o\
-gdt.o
+gdt.o\
+idt.o\
+irq.o\
+isr.o
 
 
 all : $(ASMOBJS)

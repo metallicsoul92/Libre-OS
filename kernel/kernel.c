@@ -3,6 +3,9 @@
 #include "../include/multiboot.h"
 #include "../include/tty.h"
 #include "../include/gdt.h"
+#include "../include/idt.h"
+#include "../include/irq.h"
+#include "../include/isr.h"
 /**
 * Kernel Information
 */
@@ -26,16 +29,22 @@ int kernel_main(unsigned long magic, unsigned long addr){
 //Initialization here
  initializeTerminal();
  gdt_install();
+ 	idt_install();
+ 	isrs_install();
+ 	irq_install();
 
  int intTest = 45;
 
 //Other Functions here
   printk("Welcome to %s\nVersion: %s\n",_kInfo.name.name,_kInfo.name.versionName);
-  printk("Printk Tests:\n");
-  printk("intTest = %d , expected 45\n",intTest);
-  printk("======================================\n");
-  printk("Multiboot addr = 0x%x\n", addr);
-  printk("Multiboot Memory Low: 0x%x\n Multiboot Memory Upper: 0x%x\n",mbt->mem_lower,mbt->mem_upper);
-  printk("Global Descriptor Installed...");
+  printk("Multiboot Flags: 0x%x\n",mbt->flags);
+  printk("Multiboot addr : 0x%x\n", addr);
+  printk("Multiboot Memory Low: 0x%x\nMultiboot Memory Upper: 0x%x\n",mbt->mem_lower,mbt->mem_upper);
+  printk("Multiboot mmap address: 0x%x\n",mbt->mmap_addr);
+  printk("Multiboot mod count : %u\nMod Address: 0x%x\n",mbt->mods_count, mbt->mods_addr);
+  printk("=====================================\n");
+  printk("Global Descriptor Installed...\n");
+  printk("Interupt Descriptor Installed...\n");
+  printk("Interupt Request Queue Installed...\n");
     return 0;
 }
