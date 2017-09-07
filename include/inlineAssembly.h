@@ -1,6 +1,8 @@
 #ifndef INLINE_ASSEMBLY_H_
 #define INLINE_ASSEMBLY_H_
 
+#include "../libc/include/sys/cdefs.h"
+
 static inline void outb(uint16_t port, uint8_t val)
 {
     asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port) );

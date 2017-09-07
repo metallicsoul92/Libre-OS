@@ -6,6 +6,7 @@
 #include "../include/idt.h"
 #include "../include/irq.h"
 #include "../include/isr.h"
+#include "../include/paging.h"
 /**
 * Kernel Information
 */
@@ -16,6 +17,9 @@
 *Multiboot Information
 */
 	multiboot_info_t *mbt;
+
+uint32_t kernel_begin;
+uint32_t kernel_end;
 
 int kernel_main(unsigned long magic, unsigned long addr){
 
@@ -46,5 +50,7 @@ int kernel_main(unsigned long magic, unsigned long addr){
   printk("Global Descriptor Installed...\n");
   printk("Interupt Descriptor Installed...\n");
   printk("Interupt Request Queue Installed...\n");
+  printk("Address of beginning of kernel : 0x%x\n", &kernel_begin);
+  printk("Address of end of kernel: 0x%x\n", &kernel_end);
     return 0;
 }

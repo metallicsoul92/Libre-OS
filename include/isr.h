@@ -2,6 +2,7 @@
 #define ARCH_I386_ISR_H
 
 #include "registers.h"
+#include "idt.h"
 
 #define ISR_COUNT 32
 
@@ -73,7 +74,7 @@ static const char *exception_messages[32] = {
 extern void isr0();
 extern void isr31();
 void isr_handler(regs_t regs){
-	
+
 }
 
 

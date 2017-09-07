@@ -292,3 +292,10 @@ int written = 0;
 	va_end(parameters);
 	return written;
 }
+
+
+void sprintk( char * buffer,const char *fmt,...){
+  char *output = buffer;
+
+
+}

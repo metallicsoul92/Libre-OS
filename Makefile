@@ -27,6 +27,8 @@ $(KERNELASMBINDIR)/isr.o
 
 KERNELOBJS=\
 $(ASMOBJS) \
+$(KERNELBINDIR)/kmem.o\
+$(KERNELBINDIR)/paging.o\
 $(KERNELBINDIR)/tty.o\
 $(KERNELBINDIR)/kernel.o\
 
