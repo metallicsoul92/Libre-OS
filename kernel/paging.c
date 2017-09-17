@@ -117,6 +117,7 @@ void initializePaging(){
 
     // Let's make a page directory.
     kernelDirectory = (page_directory_t*)kmalloc_a(sizeof(page_directory_t));
+    memset(kernelDirectory, 0, sizeof(page_directory_t));
     currDirectory = kernelDirectory;
 
     // We need to identity map (phys addr = virt addr) from
@@ -139,6 +140,8 @@ void initializePaging(){
     // Now, enable paging!
     switchPageDirectory(kernelDirectory);
 }
+
+
 
 void switchPageDirectory(page_directory_t *dir){
  currDirectory = dir;

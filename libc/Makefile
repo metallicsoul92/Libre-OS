@@ -8,7 +8,7 @@ BINDIR=../bin/libc
 
 
 
-CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
+CFLAGS:=$(CFLAGS) -g -ffreestanding -Wall -Wextra
 
 LIBK_CFLAGS:=$(CFLAGS)
 LIBK_CPPFLAGS:=$(CPPFLAGS) -D__is_libk
