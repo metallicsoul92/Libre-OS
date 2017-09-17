@@ -4,10 +4,10 @@
 as well as the philosophies of The GNU Project.
 
 
-#Requirements to build
+# Requirements to build
     an i686-elf-gcc cross compiler. (unless your using an actual i686 processor)
 
-#To Install
+# To Install
   first you may want to run the configure script. At the moment it  is targetted
 to intel's x86 architecture , so i setup a build script as well in the scripts folder.
 
@@ -17,7 +17,7 @@ to intel's x86 architecture , so i setup a build script as well in the scripts f
     ./build-ix86.sh
 
 
-#To Run
+# To Run
 
   I personally use qemu. after building , assumming we are still in the scripts
 directory, i normally test by using:
@@ -25,8 +25,8 @@ directory, i normally test by using:
   qemu-system-i386 -d int --cdrom  ../LibreOS.iso
 
   This triggers qemu to display information about the registers while running
-  
-#TODO:
+
+# TODO:
   Correctly setup paging.
   Correctly setup processes
   Create User-Mode and add support for Ext4 file system
