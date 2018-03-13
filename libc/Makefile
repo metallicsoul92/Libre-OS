@@ -14,6 +14,8 @@ LIBK_CFLAGS:=$(CFLAGS)
 LIBK_CPPFLAGS:=$(CPPFLAGS) -D__is_libk
 
 FREEOBJS=\
+ src/abort.o\
+ src/assert.o\
  src/ctypes.o\
  src/itoa.o\
  src/string.o\

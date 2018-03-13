@@ -6,6 +6,7 @@
 #include "../include/idt.h"
 #include "../include/irq.h"
 #include "../include/isr.h"
+#include "../include/kbd.h"
 /**
 * Kernel Information
 */
@@ -46,5 +47,8 @@ int kernel_main(unsigned long magic, unsigned long addr){
   printk("Global Descriptor Installed...\n");
   printk("Interupt Descriptor Installed...\n");
   printk("Interupt Request Queue Installed...\n");
+  while(1){
+  keyboard_handler_main();
+}
     return 0;
 }

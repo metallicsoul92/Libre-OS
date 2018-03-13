@@ -1,5 +1,5 @@
-#ifndef ARCH_I386_ISR_H
-#define ARCH_I386_ISR_H
+#ifndef ISR_H
+#define ISR_H
 
 #include "registers.h"
 
@@ -73,7 +73,7 @@ static const char *exception_messages[32] = {
 extern void isr0();
 extern void isr31();
 void isr_handler(regs_t regs){
-	
+
 }
 
 

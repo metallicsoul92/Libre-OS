@@ -1,5 +1,5 @@
-#ifndef ARCH_I386_IRQ_H
-#define ARCH_I386_IRQ_H
+#ifndef IRQ_H
+#define IRQ_H
 
 #include "inlineAssembly.h"
 #include "registers.h"

@@ -1,5 +1,5 @@
-#ifndef ARCH_I386_GDT_H
-#define ARCH_I386_GDT_H
+#ifndef GDT_H
+#define GDT_H
 
 
 #include "config.h"
@@ -117,7 +117,7 @@ void set_kernel_stack(uintptr_t stack) {
   #endif
 }
 
-#undef ENTRY 
+#undef ENTRY
 
 
 #endif
