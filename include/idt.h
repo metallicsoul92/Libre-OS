@@ -2,29 +2,25 @@
 #define IDT_H
 
 #include "../libc/include/sys/cdefs.h"
-typedef struct {
 	#ifdef __IX86__
+typedef struct {
+
 	uint16_t base_low;
 	uint16_t sel;
 	uint8_t zero;
 	uint8_t flags;
 	uint16_t base_high;
-	#endif
 } __attribute__((packed)) idt_entry_t;
 
 typedef struct {
-	#ifdef __IX86__
 	uint16_t limit;
 	uintptr_t base;
-	#endif
 } __attribute__((packed)) idt_pointer_t;
 
 /* In the future we may need to put a lock on the access of this */
-static struct {
-	#ifdef __IX86__
+static struct{
 	idt_entry_t entries[256];
 	idt_pointer_t pointer;
-	#endif
 } idt __attribute__((used));
 
 #define ENTRY(X) (idt.entries[(X)])
@@ -46,7 +42,7 @@ void idt_install(void) {
 	idt_pointer_t * idtp = &idt.pointer;
 	idtp->limit = sizeof idt.entries - 1;
 	idtp->base = (uintptr_t)&ENTRY(0);
-	memset(&ENTRY(0), 0, sizeof idt.entries);
+	memset(&ENTRY(0), 0, sizeof(idt.entries));
 
 	idt_load((uintptr_t)idtp);
 }
@@ -54,5 +50,5 @@ void idt_install(void) {
 
 #undef ENTRY
 
-
+#endif
 #endif //idt

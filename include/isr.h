@@ -2,6 +2,7 @@
 #define ISR_H
 
 #include "registers.h"
+#include "idt.h"
 
 #define ISR_COUNT 32
 

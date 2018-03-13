@@ -7,10 +7,12 @@ BINDIR=../bin/kernel
 ARCHDIR=../arch
 
 KERNOBJS=\
+kmem.o\
+paging.o\
 tty.o\
 kernel.o\
 
-CFLAGS:=$(CFLAGS) -ffreestanding -Wall -Wextra
+CFLAGS:=$(CFLAGS) -g -ffreestanding -Wall -Wextra
 
 
 

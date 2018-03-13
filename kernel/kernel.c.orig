@@ -1,0 +1,120 @@
+#include "../include/internal.h"
+#include "../include/kernel.h"
+#include "../include/multiboot.h"
+#include "../include/tty.h"
+#include "../include/gdt.h"
+#include "../include/idt.h"
+#include "../include/irq.h"
+#include "../include/isr.h"
+<<<<<<< HEAD
+#include "../include/kbd.h"
+=======
+#include "../include/paging.h"
+#include "../include/kmem.h"
+>>>>>>> acc6407069823ddff04399d99471a0b2e35cb881
+/**
+* Kernel Information
+*/
+
+ _internal_kernel_info _kInfo = {{"Libre-OS","Alpha"} , {0,0,1,0}};
+
+/**
+*Multiboot Information
+*/
+	multiboot_info_t *mbt;
+
+uint32_t kernel_begin;
+uint32_t kernel_end;
+
+
+unsigned long readCR(uint8_t index){
+  unsigned long value;
+  switch(index){
+    case 0:
+    asm volatile ( "mov %%cr0, %0" : "=r"(value) );
+    case 1:
+    asm volatile ( "mov %%cr1, %0" : "=r"(value) );
+    case 2:
+    asm volatile ( "mov %%cr2, %0" : "=r"(value) );
+    case 3:
+    asm volatile ( "mov %%cr3, %0" : "=r"(value) );
+    default:
+    value = 0;
+  }
+    return value;
+  }
+
+
+int kernel_main(unsigned long magic, unsigned long addr){
+
+//Pre-Boot Shit
+  if(magic != MULTIBOOT_BOOTLOADER_MAGIC){
+    printk("Error Multiboot magic invalid");
+  }
+
+  mbt =(multiboot_info_t *) addr;
+
+  	multiboot_memory_map_t* mmap = mbt->mmap_addr;
+  		while(mmap < mbt->mmap_addr + mbt->mmap_length) {
+  			mmap = (multiboot_memory_map_t*) ( (unsigned int)mmap + mmap->size + sizeof(mmap->size) );
+      }
+//Initialization here
+ initializeTerminal();
+ gdt_install();
+ 	idt_install();
+ 	isrs_install();
+ 	irq_install();
+  initializePaging();
+
+ int intTest = 45;
+#define CHECK_FLAG(flags,bit)   ((flags) & (1 << (bit)))
+//Other Functions here
+  printk("Welcome to %s\nVersion: %s\n",_kInfo.name.name,_kInfo.name.versionName);
+  printk("Multiboot Flags: 0x%x\n",mbt->flags);
+  printk("Multiboot addr : 0x%x\n", addr);
+  printk("Multiboot Memory Low: 0x%x\nMultiboot Memory Upper: 0x%x\n",mbt->mem_lower,mbt->mem_upper);
+  printk("Unsigned:\nMultiboot Memory Low: 0x%u\nMultiboot Memory Upper: 0x%u\n",mbt->mem_lower,mbt->mem_upper);
+  if (CHECK_FLAG (mbt->flags, 6))
+    {
+      multiboot_memory_map_t *mmap;
+
+      printk("mmap_addr = 0x%x, mmap_length = 0x%x\n",
+              (unsigned) mbt->mmap_addr, (unsigned) mbt->mmap_length);
+      for (mmap = (multiboot_memory_map_t *) mbt->mmap_addr;
+           (unsigned long) mmap < mbt->mmap_addr + mbt->mmap_length;
+           mmap = (multiboot_memory_map_t *) ((unsigned long) mmap
+                                    + mmap->size + sizeof (mmap->size)))
+        printk("size = 0x%x, base_addr = 0x%x00000000%x,"
+                " length = 0x%x00000000%x, type = 0x%x\n",
+                (unsigned) mmap->size,
+                (unsigned) (mmap->addr >> 32),
+                (unsigned) (mmap->addr & 0xffffffff),
+                (unsigned) (mmap->len >> 32),
+                (unsigned) (mmap->len & 0xffffffff),
+                (unsigned) mmap->type);
+    }
+
+//  printk("Multiboot mmap address: 0x%x\nMultiboot mmap length: %d\n",mbt->mmap_addr,mbt->mmap_length);
+  printk("Multiboot mod count : %u\nMod Address: 0x%x\n",mbt->mods_count, mbt->mods_addr);
+  printk("=====================================\n");
+  printk("Global Descriptor Installed...\n");
+  printk("Interupt Descriptor Installed...\n");
+  printk("Interupt Request Queue Installed...\n");
+<<<<<<< HEAD
+  while(1){
+  keyboard_handler_main();
+}
+=======
+  //printk("Paging Setup!\n");
+  printk("Address of beginning of kernel : 0x%x\n", &kernel_begin);
+  printk("Address of end of kernel: 0x%x\n", &kernel_end);
+  printk("=====================================\n");
+  int *kmalloc_test = (int*)kmalloc(sizeof(int*));
+  printk("Kernel Malloc test 1 at: 0x%x\n",kmalloc_test);
+  int *kmalloc_test2 = (int*)kmalloc(sizeof(int*));
+  printk("Kernel Malloc test 2 at: 0x%x\n",kmalloc_test2);
+  int *kmalloc_test3 = (int*)kmalloc(sizeof(int*));
+  printk("Kernel Malloc test 3 at: 0x%x\n",kmalloc_test3);
+>>>>>>> acc6407069823ddff04399d99471a0b2e35cb881
+    return 0;
+}

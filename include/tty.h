@@ -51,5 +51,7 @@ char * kitoab(int n, char s[],unsigned int base);
 char * kuitoa(int n, char s[]);
 char * kuitoab(int n, char s[],unsigned int base);
 
+void sprintk( char * buffer,const char *fmt,...);
+
 
 #endif //TTY.h
