@@ -30,8 +30,8 @@ directory, i normally test by using:
 
 # TODO:
 
-  Correctly setup paging.
-  Correctly setup processes
-  Create User-Mode and add support for Ext4 file system
-      Ext4 has backwards compatibility to Ext3 and Ext2 from what i read.
-    so i do believe that i can load those three if i just implement one
+  1. Correctly setup paging.
+  2. Correctly setup processes
+  3. Create User-Mode and add support for Ext4 file system
+     a. Ext4 has backwards compatibility to Ext3 and Ext2 from what i read.
+        so i do believe that i can load those three if i just implement one
