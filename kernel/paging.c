@@ -117,7 +117,7 @@ void initializePaging(){
 
     // Let's make a page directory.
     kernelDirectory = (page_directory_t*)kmalloc_a(sizeof(page_directory_t));
-    memset(kernelDirectory, 0, sizeof(page_directory_t));
+    memset(kernelDirectory, 0,0x1000);
     currDirectory = kernelDirectory;
 
     // We need to identity map (phys addr = virt addr) from
