@@ -63,7 +63,14 @@ unsigned char keyboard_map[128] =
 		if(keycode < 0)
 			return;
       if(keyboard_map[keycode]  =='\n'){
+        _terminalInfo t = getTerminalInfo();
+        _videoInfo v = getVideoInfo();
+
+        if((t.y+1) == v.videoHeight){
+          terminalScroll();
+        }else{
       terminalWriteLine("");
+    }
       terminalUpdateCursor();
 }
       /*write_line deals with column and row  */

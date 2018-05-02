@@ -19,6 +19,16 @@
 _videoInfo videoInfo;
 _terminalInfo terminalInfo;
 
+
+_terminalInfo getTerminalInfo(){
+  return terminalInfo;
+}
+
+_videoInfo getVideoInfo(){
+  return videoInfo;
+}
+
+
 _terminalColor getColor(uint8_t color){
   _terminalColor out;
     out.foreground =  color & 0xFF;
@@ -144,14 +154,18 @@ void terminalPutEntryAt(unsigned char c, uint8_t color, size_t x, size_t y) {
 
 void terminalPutChar(char c){
 	unsigned char uc = c;
-	terminalPutEntryAt(uc, colorTouint8(terminalInfo.color), terminalInfo.x, terminalInfo.y);
+  //if the max with has been reached
 	if (++terminalInfo.x == videoInfo.videoWidth) {
+    //set terminal x to 0
 		terminalInfo.x = 0;
+    //if max length has been reached
+    if((terminalInfo.y +1) == videoInfo.videoHeight){
+      terminalScroll();
+    }else
     terminalInfo.y++;
-		if (++terminalInfo.y == videoInfo.videoHeight)
-      terminalInfo.row++;
-      terminalInfo.x =0;
-	}
+  }
+
+  terminalPutEntryAt(uc, colorTouint8(terminalInfo.color), terminalInfo.x, terminalInfo.y);
   terminalUpdateCursor();
 }
 
@@ -180,8 +194,21 @@ void terminalChangeColorUint8(uint8_t color){
 
 void terminalNewLine(){
   terminalInfo.x= 0;
-  terminalInfo.y++;
+  if((terminalInfo.y+1)==videoInfo.videoHeight){
+    terminalScroll();
+  }else{
+    terminalInfo.y++;
+  }
   terminalUpdateCursor();
+}
+
+void terminalScroll(){
+  for(unsigned int i = 0 ; i < videoInfo.videoHeight; i++){
+    for(unsigned int j =0; j < videoInfo.videoWidth; j++){
+      terminalInfo.buffer[i * videoInfo.videoWidth + j] =
+      terminalInfo.buffer[(i+1) * videoInfo.videoWidth + j];
+    }
+  }
 }
 
 static bool print(const char* data, size_t length) {

@@ -23,7 +23,8 @@ $(KERNELASMBINDIR)/tss.o \
 $(KERNELASMBINDIR)/gdt.o \
 $(KERNELASMBINDIR)/idt.o \
 $(KERNELASMBINDIR)/irq.o \
-$(KERNELASMBINDIR)/isr.o
+$(KERNELASMBINDIR)/isr.o \
+$(KERNELASMBINDIR)/paging.o
 
 KERNELOBJS=\
 $(ASMOBJS) \
@@ -50,6 +51,7 @@ link-ix86:
 	./scripts/confirmMB.sh
 
 clean:
+	cd include && rm config.h
 	cd libc && make clean
 	cd kernel && make clean
 	cd bin && rm kernel.*

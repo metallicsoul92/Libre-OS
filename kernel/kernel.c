@@ -35,11 +35,12 @@ int kernel_main(unsigned long magic, unsigned long addr){
  	idt_install();
  	isrs_install();
  	irq_install();
- // initializePaging();
+//  initializePaging();
+  setupBasicPaging();
 
 
 //Other Functions here
-  printk("Welcome to %s\nVersion: %s\n",_kInfo.name.name,_kInfo.name.versionName);
+  printk("Welcome to %s     Version: %s\n",_kInfo.name.name,_kInfo.name.versionName);
   printk("Multiboot Flags: 0x%x\n",mbt->flags);
   printk("Multiboot addr : 0x%x\n", addr);
   printk("Multiboot Memory Low: 0x%x\nMultiboot Memory Upper: 0x%x\n",mbt->mem_lower,mbt->mem_upper);
@@ -55,7 +56,7 @@ int kernel_main(unsigned long magic, unsigned long addr){
   printk("CPUID 0 VENDOR STRING : %s%\n",vendorString);
   cpuidret[0] =1;
   __get_cpuid(0,&cpuidret[0],&cpuidret[1],&cpuidret[2],&cpuidret[3]);
-  char cpuidFeats[150];
+  char cpuidFeats[1024];
   memset(cpuidFeats,0,sizeof(cpuidFeats));
   featureString(cpuidFeats,cpuidret[2],cpuidret[3]);
   printk("CPU FEATURES:\n%s\n",cpuidFeats);
@@ -63,6 +64,7 @@ int kernel_main(unsigned long magic, unsigned long addr){
   printk("Global Descriptor Installed...\n");
   printk("Interupt Descriptor Installed...\n");
   printk("Interupt Request Queue Installed...\n");
+  printk("Paging Aparently Initialized?");
   while(1){
   keyboard_handler_main();
 }

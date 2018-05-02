@@ -70,7 +70,7 @@ int bitsetCopy(bitset *source, bitset *destination ){
   }else if(source == NULL){
     return -2;
   }else
-  destination = source;
+  *destination = *source;
   return 0;
 }
 int bitsetMove(bitset *source,bitset *destination ){

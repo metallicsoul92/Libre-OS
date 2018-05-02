@@ -31,127 +31,46 @@ inline void getVendorString(char * output,unsigned int ebx,unsigned int ecx,unsi
   output[10] = convert[2].ch[2];
   output[11] = convert[2].ch[3];
 }
-const char *__featECX[16]={
-  "SSE3", "PCLMUL","LZCNT","SSSE3",
-  "FMA", "CMPXCHG16B", "SSE4_1","SSE4_2",
-  "MOVBE","POPCNT","AES","XSAVE","OSXAVE",
-  "AVX","F16C","RDRND"
+const char *__featECX[32]={
+  "SSE3", "PCLMUL","DTES64","MONITOR",
+  "DS-CPL","VMX","SMX","EST","TM2",
+  "SSSE3","CNXT-ID","SDBG","FMA","CX16",
+  "XPTR","PDCM","(reserved)","PCID","DCA",
+  "SSE4-1","SSE4.2","X2APIC","MOVBE","POPCNT",
+  "TSC-DL","AES","XSAVE","OSXSAVE","AVX","F16C",
+  "RDRND","HYPER-V"
 };
 
-const char *__featEDX[6]={
-  "CMPXCHG8B","CMOV","MMX","FXSAVE","SSE","SSE2"
+const char *__featEDX[32]={
+  "FPU","VME","DE","PSE","TSC",
+  "MSR","PAE","MCE","CMPXCHG8B",
+  "APCI","(res bit)","SEP",
+  "MTRR","PGE","MCA", "CMOV", "PAT",
+  "PSE-36","PSN","CLFLUSH","(res bit)",
+  "DS","ACPI-THERM","MMX","FXSAVE","SSE",
+  "SSE2","SS","HTT","THERM","IA64","PBE"
 };
 
 //NOTE output MUST BE an Empty String
 inline void featureString(char * output,uint32_t ecx, uint32_t edx){
-  if(ecx & bit_SSE3){
-    strcat(__featECX[0],output);
-    strcat(",",output);
-  }
 
-  if(ecx & bit_PCLMUL){
-    strcat(__featECX[1],output);
-    strcat(",",output);
-  }
 
-  if(ecx & bit_LZCNT){
-    strcat(__featECX[2],output);
-    strcat(",",output);
-  }
+  for(int i = 0; i < 32; i++){
 
-  if(ecx & bit_SSSE3){
-    strcat(__featECX[3],output);
-    strcat(",",output);
-  }
-  if(ecx & bit_FMA){
-    strcat(__featECX[4],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_CMPXCHG16B){
-    strcat(__featECX[5],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_SSE4_1){
-    strcat(__featECX[6],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_SSE4_2){
-    strcat(__featECX[7],output);
-    strcat(",",output);
-  }
-  if(ecx & bit_MOVBE){
-    strcat(__featECX[8],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_POPCNT){
-    strcat(__featECX[9],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_AES){
-    strcat(__featECX[10],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_XSAVE){
-    strcat(__featECX[11],output);
-    strcat(",",output);
-  }
-  if(ecx & bit_OSXSAVE){
-    strcat(__featECX[12],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_AVX){
-    strcat(__featECX[13],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_F16C){
-    strcat(__featECX[14],output);
-    strcat(",",output);
-  }
-
-  if(ecx & bit_RDRND){
-    strcat(__featECX[15],output);
-    strcat(",",output);
+       if(ecx & (1 << i)){
+         strcat(__featECX[i],output);
+         strcat(",",output);
+       }
   }
 
   strcat("\n",output);
 
-  if(edx & bit_CMPXCHG8B){
-    strcat(__featEDX[0],output);
+  for(int n = 0; n < 32; n++){
+  if(edx & (1 << n)){
+    strcat(__featEDX[n],output);
     strcat(",",output);
   }
-
-  if(edx & bit_CMOV){
-    strcat(__featEDX[1],output);
-    strcat(",",output);
-  }
-
-  if(edx & bit_MMX){
-    strcat(__featEDX[2],output);
-    strcat(",",output);
-  }
-
-  if(edx & bit_FXSAVE){
-    strcat(__featEDX[3],output);
-    strcat(",",output);
-  }
-
-  if(edx & bit_SSE){
-    strcat(__featEDX[4],output);
-    strcat(",",output);
-  }
-
-  if(edx & bit_SSE2){
-    strcat(__featEDX[5],output);
-    strcat("\n",output);
-  }
+}
 
 }
 

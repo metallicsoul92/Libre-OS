@@ -27,7 +27,8 @@ tss.o\
 gdt.o\
 idt.o\
 irq.o\
-isr.o
+isr.o\
+paging.o
 
 
 all : $(ASMOBJS)

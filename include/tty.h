@@ -26,6 +26,8 @@ struct __terminalInfo{
 
 typedef struct __terminalInfo _terminalInfo;
 
+_terminalInfo getTerminalInfo();
+_videoInfo getVideoInfo();
 extern _terminalInfo terminalInfo;
 
 void initializeTerminal();
@@ -39,7 +41,7 @@ void terminalWriteLine(const char * data);
 void terminalChangeColor(_terminalColor color);
 void terminalChangeColorUint8(uint8_t color);
 void terminalNewLine();
-
+void terminalScroll();
 int printk(const char *fmt, ...);
 
 //for the kitoa family:
