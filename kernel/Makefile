@@ -9,6 +9,7 @@ ARCHDIR=../arch
 KERNOBJS=\
 kmem.o\
 paging.o\
+task.o\
 tty.o\
 kernel.o\
 

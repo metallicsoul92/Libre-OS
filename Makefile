@@ -24,6 +24,7 @@ $(KERNELASMBINDIR)/gdt.o \
 $(KERNELASMBINDIR)/idt.o \
 $(KERNELASMBINDIR)/irq.o \
 $(KERNELASMBINDIR)/isr.o \
+$(KERNELASMBINDIR)/switch.o\
 $(KERNELASMBINDIR)/paging.o
 
 KERNELOBJS=\
@@ -31,6 +32,7 @@ $(ASMOBJS) \
 $(KERNELBINDIR)/kmem.o\
 $(KERNELBINDIR)/paging.o\
 $(KERNELBINDIR)/tty.o\
+$(KERNELBINDIR)/task.o\
 $(KERNELBINDIR)/kernel.o\
 
 LINK_LIST_ix86?=\

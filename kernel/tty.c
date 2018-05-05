@@ -28,6 +28,7 @@ _videoInfo getVideoInfo(){
   return videoInfo;
 }
 
+static uint16_t s_buffer[80*1024];
 
 _terminalColor getColor(uint8_t color){
   _terminalColor out;
@@ -150,7 +151,9 @@ void terminalUpdateCursor(){
 void terminalPutEntryAt(unsigned char c, uint8_t color, size_t x, size_t y) {
 	const size_t index = y * videoInfo.videoWidth + x;
 	terminalInfo.buffer[index] = vga_entry(c, color);
+  s_buffer[index] = vga_entry(c,color);
 }
+
 
 void terminalPutChar(char c){
 	unsigned char uc = c;
@@ -163,6 +166,7 @@ void terminalPutChar(char c){
       terminalScroll();
     }else
     terminalInfo.y++;
+    terminalInfo.row++;
   }
 
   terminalPutEntryAt(uc, colorTouint8(terminalInfo.color), terminalInfo.x, terminalInfo.y);
@@ -182,6 +186,7 @@ void terminalWriteString(const char* data) {
 void terminalWriteLine(const char * data){
 	terminalWriteString(data);
 	terminalInfo.y++;
+  terminalInfo.row++;
 	terminalInfo.x =0;
 }
 
@@ -198,6 +203,7 @@ void terminalNewLine(){
     terminalScroll();
   }else{
     terminalInfo.y++;
+    terminalInfo.row++;
   }
   terminalUpdateCursor();
 }
@@ -210,6 +216,7 @@ void terminalScroll(){
     }
   }
 }
+
 
 static bool print(const char* data, size_t length) {
 	const unsigned char* bytes = (const unsigned char*) data;

@@ -9,6 +9,7 @@
 #include "../include/kbd.h"
 #include "../include/paging.h"
 #include "../include/cpufeatures.h"
+#include "../include/task.h"
 /**
 * Kernel Information
 */
@@ -36,7 +37,8 @@ int kernel_main(unsigned long magic, unsigned long addr){
  	isrs_install();
  	irq_install();
 //  initializePaging();
-  setupBasicPaging();
+//  setupBasicPaging();
+//  initTasking();
 
 
 //Other Functions here
@@ -64,7 +66,9 @@ int kernel_main(unsigned long magic, unsigned long addr){
   printk("Global Descriptor Installed...\n");
   printk("Interupt Descriptor Installed...\n");
   printk("Interupt Request Queue Installed...\n");
-  printk("Paging Aparently Initialized?");
+  printk("Paging Aparently Initialized???....\n");
+  setupBasicPaging();
+
   while(1){
   keyboard_handler_main();
 }
