@@ -43,5 +43,9 @@ libk.a : $(LIBK_OBJS)
 	$(CC) -c $< -o $(BINDIR)/$@ -std=gnu11 $(LIBK_CFLAGS) $(LIBK_CPPFLAGS)
 
 clean:
-	 rm -f ${BINDIR}/$(BINARIES) *.a
-	 rm -f ${BINDIR}/$(LIBK_OBJS) *.o */*.o */*/*.o
+	rm -f ${BINDIR}/*.a
+	rm -f ${BINDIR}/*.o
+	rm -f ${BINDIR}/*/*.o
+	rm -f ${BINDIR}/*/*/*.o
+	rm -f ${BINDIR}/*.libk.o
+	rm -f ${BINDIR}/sys/*.libk.o
