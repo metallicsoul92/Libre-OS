@@ -37,9 +37,10 @@ void createTask(Task *task, void (*main)(), uint32_t flags, uint32_t *pagedir) {
     task->regs.eflags = flags;
     task->regs.eip = (uint32_t) main;
     task->regs.cr3 = (uint32_t) pagedir;
-    task->regs.esp = kmalloc(0x1000); // Not implemented here
+    task->regs.esp = kmalloc(0x1000); 
     task->next = 0;
 }
+
 
 void yield() {
     Task *last = runningTask;

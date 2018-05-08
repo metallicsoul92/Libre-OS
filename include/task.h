@@ -1,8 +1,16 @@
 #ifndef __TASK_H__
 #define __TASK_H__
 
-#include "../libc/include/sys/cdefs.h"
+
+
 #include "config.h"
+
+#ifndef HAS_CDEFS
+#include "../libc/include/sys/cdefs.h"
+#define HAS_CDEFS 1
+#endif
+
+
 #if __IX86__ == 1
 extern void initTasking();
 
@@ -15,7 +23,6 @@ typedef struct Task {
     struct Task *next;
 } Task;
 
- void initTasking();
  void createTask(Task*, void(*)(), uint32_t, uint32_t*);
 
  void yield(); // Switch task frontend

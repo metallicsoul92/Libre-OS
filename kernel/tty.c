@@ -20,12 +20,12 @@ _videoInfo videoInfo;
 _terminalInfo terminalInfo;
 
 
-_terminalInfo getTerminalInfo(){
-  return terminalInfo;
+_terminalInfo *getTerminalInfo(){
+  return &terminalInfo;
 }
 
-_videoInfo getVideoInfo(){
-  return videoInfo;
+_videoInfo *getVideoInfo(){
+  return &videoInfo;
 }
 
 static uint16_t s_buffer[80*1024];

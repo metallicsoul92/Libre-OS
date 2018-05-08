@@ -117,7 +117,7 @@ uint8_t capsOn = 0;
 
 // Check for CTRL ALT SHIFT state changes
 #ifdef CONFIG_VERBOSE_KERNEL
-#ifdef CONFIG_VERBOSE_KEYBOARD
+#ifdef CONFIG_VERBOSE_KERNEL_KEYBOARD
  printk("Keycode 0x%x",keycode);
 #endif //CONFIG_VERBOSE_KEYBOARD
 #endif //CONFIG_VERBOSE_KERNEL
@@ -212,14 +212,13 @@ uint8_t capsOn = 0;
     }
 
       if(kmap[keycode]  =='\n'){
-        _terminalInfo t = getTerminalInfo();
-        _videoInfo v = getVideoInfo();
 
-        if((t.y+1) == v.videoHeight){
+        if((terminalInfo.y+1) == videoInfo.videoHeight){
           terminalScroll();
         }else{
       terminalWriteLine("");
     }
+    terminalInfo.x = 0;
       terminalUpdateCursor();
 }
       /*write_line deals with column and row  */

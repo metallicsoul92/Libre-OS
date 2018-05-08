@@ -20,7 +20,7 @@ FREEOBJS=\
  src/itoa.o\
  src/string.o\
  src/stdio.o\
-
+ src/sys/utsname.o
 
 
 LIBK_OBJS=$(FREEOBJS:.o=.libk.o)

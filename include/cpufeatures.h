@@ -12,6 +12,13 @@ union _uinttochar{
 
 typedef union _uinttochar uitoc;
 
+struct __internal_cpuid{
+    uint32_t ecx;
+    uint32_t edx;
+};
+
+typedef struct __internal_cpuid _cpuidProf;
+
 inline void getVendorString(char * output,unsigned int ebx,unsigned int ecx,unsigned int edx){
   uitoc  convert[3];
   convert[0].ui =ebx;
@@ -59,7 +66,10 @@ inline void featureString(char * output,uint32_t ecx, uint32_t edx){
 
        if(ecx & (1 << i)){
          strcat(__featECX[i],output);
-         strcat(",",output);
+         if(i == 30){
+         }else{
+           strcat(",",output);
+         }
        }
   }
 
@@ -68,7 +78,10 @@ inline void featureString(char * output,uint32_t ecx, uint32_t edx){
   for(int n = 0; n < 32; n++){
   if(edx & (1 << n)){
     strcat(__featEDX[n],output);
-    strcat(",",output);
+    if(n == 30){
+    }else{
+      strcat(",",output);
+    }
   }
 }
 

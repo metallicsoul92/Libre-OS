@@ -63,6 +63,7 @@ multiboot_entry:
         pushl   $0
         popf
 
+        call _init
         /* Push the pointer to the Multiboot information structure. */
         pushl   %ebx
         /* Push the magic value. */

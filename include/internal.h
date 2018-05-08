@@ -1,6 +1,8 @@
 #ifndef _INTERNAL_H_
 #define _INTERNAL_H_
 
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
 
 /*
  * Internal Kernel Version:
@@ -15,7 +17,13 @@ struct __internal_kernel_version{
     unsigned short tweak;
 };
 
+extern char versionString[32];
+
+
 typedef struct __internal_kernel_version _internal_kernel_version;
+
+void generateVersionString(_internal_kernel_version * v);
+
 
 /*
  * Internal Kernel Name:
@@ -39,8 +47,11 @@ typedef struct {
     _internal_kernel_version version;
 } _internal_kernel_info;
 
+ extern _internal_kernel_info _kInfo;
 
-
+const char *archList[]={
+  "x86","x86_64","ARM"
+};
 
 
 

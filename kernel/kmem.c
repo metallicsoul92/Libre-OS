@@ -1,4 +1,11 @@
 #include "../include/kmem.h"
+#include "../include/config.h"
+#include "../libc/include/string.h"
+#include "../include/tty.h"
+
+#ifdef __IX86__
+ _vmmu kvmmu;
+#endif
 
 
 // end is defined in the linker script.
@@ -45,3 +52,17 @@ uint32_t kmalloc(uint32_t sz)
 {
     return kmalloc_int(sz, 0, 0);
 }
+
+#ifdef __IX86__
+void initMem(_vmmu * vmmu ){
+                vmmu->kmem_end = (uint32_t)&kernel_end;
+                vmmu->heap_begin = vmmu->kmem_end + 0x1000;
+                vmmu->kheap_mem_end = 0x400000;
+                vmmu->kheap_mem = vmmu->kheap_mem_end - (MAX_PALIGN_ALLOCS *4096);
+                vmmu->heap_end = vmmu->kheap_mem;
+                memset((char *)vmmu->heap_begin,0,(vmmu->heap_end - vmmu->heap_begin));
+                vmmu->pageDesc = (uint8_t *)kmalloc(MAX_PALIGN_ALLOCS);
+                printk("Kernel heap starts at: 0x%x\n",vmmu->heap_begin);
+              }
+
+#endif

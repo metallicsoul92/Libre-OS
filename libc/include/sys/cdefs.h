@@ -14,6 +14,7 @@ typedef long long int64_t;
 typedef unsigned long long uint64_t;
 typedef unsigned long uintptr_t;
 #endif //HAS FIX WIDTH TYPES
+
 //useful gnu typedef
 #ifndef HAS_SSIZE_T
 typedef long ssize_t;

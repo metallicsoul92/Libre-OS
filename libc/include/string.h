@@ -2,8 +2,10 @@
 #ifndef _STRING_H
 #define _STRING_H 1
 
+#ifndef HAS_CDEFS
 #include "sys/cdefs.h"
-
+#define HAS_CDEFS 1
+#endif
 #include "stddef.h"
 
 #ifdef __cplusplus

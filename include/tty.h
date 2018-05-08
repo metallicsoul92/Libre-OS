@@ -26,9 +26,10 @@ struct __terminalInfo{
 
 typedef struct __terminalInfo _terminalInfo;
 
-_terminalInfo getTerminalInfo();
-_videoInfo getVideoInfo();
+_terminalInfo *getTerminalInfo();
+_videoInfo *getVideoInfo();
 extern _terminalInfo terminalInfo;
+extern _videoInfo videoInfo;
 
 void initializeTerminal();
 void terminalClear();
