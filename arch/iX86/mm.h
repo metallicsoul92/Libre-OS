@@ -3,6 +3,8 @@
 
 #include "../../include/config.h"
 
+#include "../../include/multiboot.h"
+
 #ifndef HAS_CDEFS
 #include "../../libc/include/sys/cdefs.h"
 #define HAS_CDEFS 1
@@ -20,6 +22,6 @@ struct __vmmu_{
 
 typedef struct __vmmu_ _vmmu;
 #define MAX_PALIGN_ALLOCS 32
-void initMem(_vmmu * vmmu);
+void initMem(_vmmu * vmmu, multiboot_info_t * mb);
 
 #endif // ix86_mm_h

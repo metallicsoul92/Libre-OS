@@ -83,7 +83,7 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   printk("=====================================\n");
   printk("Global Descriptor Installed...     Interupt Descriptor Installed...\n");
   printk("Interupt Request Queue Installed...\n");
-  initMem(&vmmu);
+  initMem(&vmmu,mbt);
   paging_init();
   initTasking();
 

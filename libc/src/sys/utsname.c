@@ -4,6 +4,7 @@
 
 int uname(utsname_t *name){
   #ifdef __is_libk
+  extern char versionString[32];
   name->sysname = _kInfo.name.name;
   name->nodename = NULL; //idk what to put here yet
   generateVersionString(&_kInfo.version);

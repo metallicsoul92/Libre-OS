@@ -1,6 +1,7 @@
 #include "../include/kmem.h"
 #include "../include/config.h"
 #include "../libc/include/string.h"
+#include "../libc/include/stddef.h"
 #include "../include/tty.h"
 
 #ifdef __IX86__
@@ -53,8 +54,20 @@ uint32_t kmalloc(uint32_t sz)
     return kmalloc_int(sz, 0, 0);
 }
 
+const char *memtypes[]={
+  "Available", "Reserved", "ACPI","NVS","BADRAM"
+};
+
 #ifdef __IX86__
-void initMem(_vmmu * vmmu ){
+void initMem(_vmmu * vmmu , multiboot_info_t * mb ){
+                printk("Pulling mmap from GRUB\n");
+                multiboot_memory_map_t *mmap = mb->mmap_addr;
+                printk("Memory Address : 0x%x , Length : %d\n", mb->mmap_addr, mb->mmap_length);
+                while(mmap < mb->mmap_addr + mb->mmap_length){
+                  printk("Memory Address At : 0x%X  Length: %U kb type: %u (%s) \n",
+                  mmap->addr, mmap->len , mmap->type, memtypes[(mmap->type-1)]);
+                  mmap = (multiboot_memory_map_t*)((unsigned int)mmap + mmap->size + sizeof(mmap->size));
+                }
                 vmmu->kmem_end = (uint32_t)&kernel_end;
                 vmmu->heap_begin = vmmu->kmem_end + 0x1000;
                 vmmu->kheap_mem_end = 0x400000;

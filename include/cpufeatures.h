@@ -2,8 +2,12 @@
 #define CPUFEATURES_H_
 
 #include "../libc/include/cpuid.h"
-#include "../libc/include/sys/cdefs.h"
 #include "../libc/include/string.h"
+
+#ifndef HAS_CDEFS
+#include "../libc/include/sys/cdefs.h"
+#define HAS_CDEFS 1
+#endif
 
 union _uinttochar{
   unsigned int ui;

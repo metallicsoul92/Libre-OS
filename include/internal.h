@@ -17,7 +17,6 @@ struct __internal_kernel_version{
     unsigned short tweak;
 };
 
-extern char versionString[32];
 
 
 typedef struct __internal_kernel_version _internal_kernel_version;

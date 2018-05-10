@@ -67,6 +67,57 @@ char * kitoa(int n, char s[])
      return s;
  }
 
+ char * klltoa(long long n, char s[])
+  {
+      long long i, sign;
+
+      if ((sign = n) < 0)  /* record sign */
+          n = -n;          /* make n positive */
+      i = 0;
+      do {       /* generate digits in reverse order */
+          s[i++] = n % 10 + '0';   /* get next digit */
+      } while ((n /= 10) > 0);     /* delete it */
+      if (sign < 0)
+          s[i++] = '-';
+      s[i] = '\0';
+      reverse(s);
+      return s;
+  }
+
+  char * kulltoa(unsigned long long n, char s[])
+   {
+       long long i, sign;
+
+       if ((sign = n) < 0)  /* record sign */
+           n = -n;          /* make n positive */
+       i = 0;
+       do {       /* generate digits in reverse order */
+           s[i++] = n % 10 + '0';   /* get next digit */
+       } while ((n /= 10) > 0);     /* delete it */
+       if (sign < 0)
+           s[i++] = '-';
+       s[i] = '\0';
+       reverse(s);
+       return s;
+   }
+
+   char * kulltoab(unsigned long long n, char s[],unsigned int base)
+    {
+        long long i, sign;
+
+        if ((sign = n) < 0)  /* record sign */
+            n = -n;          /* make n positive */
+        i = 0;
+        do {       /* generate digits in reverse order */
+          s[i++] =  "0123456789ABCDEF"[n % base];   /* get next digit */
+        } while ((n /= 10) > 0);     /* delete it */
+        if (sign < 0)
+            s[i++] = '-';
+        s[i] = '\0';
+        reverse(s);
+        return s;
+    }
+
  char * kitoab(int n, char s[],unsigned int base)
   {
       int i, sign;
@@ -253,6 +304,8 @@ int written = 0;
 
 		const char* format_begun_at = fmt++;
 
+    static char buffer[16];
+    memset(&buffer,0,sizeof(buffer));
 		if (*fmt == 'c') {
 			fmt++;
 			char c = (char) va_arg(parameters, int /* char promotes to int */);
@@ -277,7 +330,7 @@ int written = 0;
 		}else if (*fmt == 'd') {
 			fmt++;
       int i = (int) va_arg(parameters,int );
-			char *c = kitoa(i,c);
+			char *c = kitoa(i,&buffer);
 			if (!maxrem) {
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
@@ -288,7 +341,29 @@ int written = 0;
 		}else if (*fmt == 'u') {
 			fmt++;
       unsigned int i = (unsigned int) va_arg(parameters,unsigned int );
-			char *c = kuitoa(i,c);
+			char *c = kuitoa(i,&buffer);
+			if (!maxrem) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+			if (!print(c, sizeof(c)))
+				return -1;
+			written++;
+		}else if (*fmt == 'U') {
+			fmt++;
+      unsigned long long i = (unsigned long long) va_arg(parameters,unsigned long long );
+			char *c = kulltoa(i,&buffer);
+			if (!maxrem) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+			if (!print(c, sizeof(c)))
+				return -1;
+			written++;
+		}else if (*fmt == 'l') {
+			fmt++;
+      long long i = (long long) va_arg(parameters,long long);
+			char *c = klltoa(i,&buffer);
 			if (!maxrem) {
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
@@ -299,7 +374,18 @@ int written = 0;
 		}else if (*fmt == 'x') {
 			fmt++;
       unsigned int i = (unsigned int) va_arg(parameters,unsigned int );
-			char *c = kuitoab(i,c,16);
+			char *c = kuitoab(i,&buffer,16);
+			if (!maxrem) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+			if (!print(c, sizeof(c)))
+				return -1;
+			written++;
+		}else if (*fmt == 'X') {
+			fmt++;
+      unsigned long long i = (unsigned long long) va_arg(parameters,unsigned long long );
+			char *c = kulltoab(i,&buffer,16);
 			if (!maxrem) {
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
