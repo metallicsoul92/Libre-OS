@@ -163,6 +163,7 @@ char * kitoa(int n, char s[])
     }
 
 
+
 uint8_t colorTouint8(_terminalColor color){
     return vga_entry_color(color.foreground,color.background);
 }

@@ -3,16 +3,10 @@ CPPFLAGS?=
 LDFLAGS?=
 LIBS?=
 
-BINDIR=../bin/kernel
-ARCHDIR=../arch
+BINDIR=../bin/drivers
 
-KERNOBJS=\
-kmem.o\
-paging.o\
-task.o\
-tty.o\
-cmos.o\
-kernel.o\
+DRIVEROBJS=\
+ata.o
 
 CFLAGS:=$(CFLAGS) -g -ffreestanding -Wall -Wextra
 
@@ -21,12 +15,9 @@ CFLAGS:=$(CFLAGS) -g -ffreestanding -Wall -Wextra
 .PHONY: ix86 arm x86_64 clean install-headers clean
 .SUFFIXES: .c .o
 
-
-ix86: $(KERNOBJS)
-	cd ${ARCHDIR}/iX86 && make
+all: $(DRIVEROBJS)
 
 clean:
-	cd ${BINDIR}/asm && rm *
 	cd ${BINDIR} && rm *.o
 
 .c.o:

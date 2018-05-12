@@ -11,6 +11,7 @@
 #include "../include/cpufeatures.h"
 #include "../include/task.h"
 #include "../libc/include/string.h"
+#include "../include/drivers/ata.h"
 /**
 * Kernel Information
 */
@@ -86,6 +87,7 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   initMem(&vmmu,mbt);
   paging_init();
   initTasking();
+  ata_init();
 
 
   while(1){

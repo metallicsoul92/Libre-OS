@@ -10,6 +10,7 @@ PHONY+= clean
 BINDIR?=bin
 KERNELBINDIR?=$(BINDIR)/kernel
 KERNELASMBINDIR?=$(KERNELBINDIR)/asm
+DRIVERSBINDIR?=$(BINDIR)/drivers
 LIBCBINDIR?=$(BINDIR)/libc
 TOOLSDIR?=tools
 TOOLSARCHDIR?=$(TOOLSDIR)/arch
@@ -33,12 +34,17 @@ $(KERNELBINDIR)/kmem.o\
 $(KERNELBINDIR)/paging.o\
 $(KERNELBINDIR)/tty.o\
 $(KERNELBINDIR)/task.o\
-$(KERNELBINDIR)/kernel.o\
+$(KERNELBINDIR)/cmos.o \
+$(KERNELBINDIR)/kernel.o
+
+DRIVERSOBJS=\
+$(DRIVERSBINDIR)/ata.o
 
 LINK_LIST_ix86?=\
 $(KERNELASMBINDIR)/crti.o \
 $(TOOLSARCHDIR)/iX86/crtbegin.o \
 $(KERNELOBJS) \
+$(DRIVERSOBJS) \
 $(LIBS) \
 $(TOOLSARCHDIR)/iX86/crtend.o \
 $(KERNELASMBINDIR)/crtn.o
@@ -47,6 +53,7 @@ $(KERNELASMBINDIR)/crtn.o
 build-ix86:
 	cd libc && make all CC=i686-elf-gcc AS=i686-elf-as LD=i686-elf-ld
 	cd kernel && make ix86 CC=i686-elf-gcc AS=i686-elf-as LD=i686-elf-ld
+	cd drivers && make CC=i686-elf-gcc LD=i686-elf-ld
 
 link-ix86:
 	i686-elf-gcc -T $(TOOLSARCHDIR)/iX86/ix86.ld -o $(BINDIR)/kernel.ix86 $(CFLAGS) $(LINK_LIST_ix86)
@@ -56,6 +63,7 @@ clean:
 	cd include && rm config.h
 	cd libc && make clean
 	cd kernel && make clean
+	cd drivers && make clean
 	cd bin && rm kernel.*
 	rm -rf isodir
 	rm LibreOS.iso

@@ -3,6 +3,8 @@
 
 #include "sys/cdefs.h"
 
+typedef long int time_t;
+
 struct tm{
   int tm_sec;
   int tm_min;

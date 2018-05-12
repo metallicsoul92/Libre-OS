@@ -20,6 +20,7 @@ FREEOBJS=\
  src/itoa.o\
  src/string.o\
  src/stdio.o\
+ src/sleep.o\
  src/sys/utsname.o
 
 

@@ -60,6 +60,13 @@ size_t strlen(const char* str) {
 	return len;
 }
 
+char *strcpy(const char *src,char *dst)
+{
+  char *cp = dst;
+  while (*cp++ = *src++);
+  return dst;
+}
+
 char * strcat(const char *source,char * destination){
 	size_t i,j;
 	for(i=0;destination[i] != '\0';i++);
