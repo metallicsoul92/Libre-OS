@@ -25,7 +25,7 @@ char *itoas(int val, char *str, int base){
 }
 
 
-inline char* litoa(long val, int base){
+char* litoa(long val, int base){
 
     static char buf[32] = {0};
 

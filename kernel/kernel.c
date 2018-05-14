@@ -87,7 +87,7 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   initMem(&vmmu,mbt);
   paging_init();
   initTasking();
-  ata_init();
+  //ata_init();
 
 
   while(1){

@@ -4,7 +4,8 @@
 #include "cdefs.h"
 
 
-
+#ifndef _HAS_STAT
+#define _HAS_STAT
 struct stat{
   dev_t st_dev;
   ino_t st_ino;
@@ -20,7 +21,9 @@ struct stat{
   blksize_t st_blksize;
   blkcnt_t st_blocks;
 };
+#endif // Has Stat
 
+/* Not standard, used for convenience */
 typedef struct stat stat_t;
 
 /* File Types */
@@ -36,7 +39,7 @@ typedef struct stat stat_t;
 #define S_ISGID   02000
 #define S_IREAD    0400
 #define S_IWRITE   0200
-#define S_IEXEC    0100 
+#define S_IEXEC    0100
 
 
 
