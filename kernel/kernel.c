@@ -90,6 +90,8 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   //ata_init();
 
 
+
+
   while(1){
   keyboard_handler_main();
 }
