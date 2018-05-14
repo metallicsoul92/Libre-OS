@@ -93,10 +93,10 @@ fi
 
 echo "/**Verbose Kernel Keyboard:**/" >> config.h.tmp
 if echo "$VKK" | grep -iq "y" ;then
-  vkkStr="Verbose Kernel keyboard defined"
+  vkkStr="Verbose Kernel Keyboard defined"
   echo "#define CONFIG_VERBOSE_KERNEL_KEYBOARD\n" >> config.h.tmp
 else
-  vkkStr="Verbose Kernel Kernel not defined"
+  vkkStr="Verbose Kernel Keyboard not defined"
   echo "#undef CONFIG_VERBOSE_KERNEL_KEYBOARD\n" >> config.h.tmp
 fi
 

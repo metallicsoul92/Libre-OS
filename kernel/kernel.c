@@ -87,6 +87,8 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   initMem(&vmmu,mbt);
   paging_init();
   initTasking();
+
+  //So ATA is kinda Reested right now i think? Idk....
   ata_init();
 
 

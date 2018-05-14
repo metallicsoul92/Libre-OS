@@ -1,5 +1,5 @@
-#ifndef LIBC_STAT_H
-#define LIBC_STAT_H
+#ifndef SYS_STAT_H
+#define SYS_STAT_H
 
 #include "cdefs.h"
 
@@ -36,7 +36,7 @@ typedef struct stat stat_t;
 #define S_ISGID   02000
 #define S_IREAD    0400
 #define S_IWRITE   0200
-#define S_IEXEC    0100 
+#define S_IEXEC    0100
 
 
 

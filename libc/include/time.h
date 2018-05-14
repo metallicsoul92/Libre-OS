@@ -16,10 +16,14 @@ struct tm{
   int tm_isdst;
 };
 
+
+#ifndef _HAS_TIMESPEC
+#define _HAS_TIMESPEC
 struct timespec{
   time_t tv_sec;
   long tv_nsec;
 };
+#endif
 
 struct itimerspec{
   struct timespec it_interval;
