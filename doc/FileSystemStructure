@@ -1,0 +1,48 @@
+5/8/18
+
+Libre-OS File System structure
+
+In Compliance with Filesystem Hierarchy Standard
+Developed by Linux Foundation.
+
+/               the root directory
+/bin            essential Binaries needed in user mode
+/boot           Boot loader files
+/dev            Devices
+/etc            Host-specific system wide config files
+/etc/X11        Config files for the X Window system
+/home           User's home directory
+/lib            Libraries for binaries in /bin and /sbin
+/lib32          Libraries for binaries in 32 bit programs
+/lib64          Libraries for binaries in 64 bit programs
+/media          Mount points for removable media such as CD-ROMS
+/mnt            Temporarily Mounted Filesystems
+/opt            Optional Applicaion Software Packages
+/proc           Virtual Filesystem providing process and kernel info as files
+/root           Home directory for the root
+/sbin           Essential System Binaries
+/srv            Site-specific data served by this system
+/sys            contains info on device drivers
+/tmp            contains temporary files not preserved between system reboots
+/usr            second herarchy for read-only user data
+/usr/bin        non-essential command binaries
+/usr/include    Standard Include Files
+/usr/lib        Libraries for binaries in /usr/bin and /usr/sbin
+/usr/lib32      Libraries for 32-bit binaries in /usr/bin and /usr/sbin
+/usr/lib64      Libraries for 64-bit binaries in /usr/bin and /usr/sbin
+/usr/local      Tertiary Hierarchy for local data specific to the Host
+/usr/sbin       Non-essential system binaries
+/usr/share      Architecture-independent data
+/usr/src        Source code of the Operating System
+/usr/X11R6      X Windw System info
+/var            Variable Files who continually change
+/var/cache      application cache data
+/var/lib        State information, persistent data modified by programs as they run
+/var/lock       Lock files
+/var/log        log files
+/var/mail       mailbox files
+/var/opt        variable data from packages that are stored in /opt
+/var/run        Runtime variable data
+/var/spool      Spool for tasks waiting to be processed
+/var/spool/mail Depreciated location for users mailboxes
+/var/tmp        Temporary files to be preserved between reboots  

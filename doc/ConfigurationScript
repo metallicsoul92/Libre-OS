@@ -1,0 +1,33 @@
+5/8/18
+
+
+Author : Clim Jark
+Version 1.0:
+
+Libre-OS Configuration Script:
+
+
+Steps:
+
+1. Processor Architecture Specification
+   a. ix86
+   b. x86_64 [FS]
+   c. ARM [FS]
+2. Multi-Threading Support [FS]
+3. PAE Support [FS]
+4. Verbose Kernel Output
+5. Verbose Kernel Output - Keyboard
+
+
+[FS] = Future Support , in development
+
+Create a config.h and set it into include/
+
+Ideas:
+ Output a string that could be inputted by make ?
+
+Other Possible configurable settings:
+
+1. x87_FPU
+2. Ext2 FS
+3. CDROM FS
