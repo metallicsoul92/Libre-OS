@@ -1,6 +1,9 @@
 #ifndef PAGING_H_
 #define PAGING_H_
 
+#include "config.h"
+
+#include "../libc/include/stdint.h"
 
 #define PAGE_SHIFT 12
 #define PAGE_SIZE ((uint32_t)1<<PAGE_SHIFT)
@@ -20,8 +23,46 @@
 /* the no. of pointers that fit on a page */
 #define PTRS_PER_PAGE			(PAGE_SIZE/sizeof(void*))
 
+typedef struct _page_table_int{
+  uint8_t present:1;
+  uint8_t rw:1;
+  uint8_t user:1;
+  uint8_t writeThru:1;
+  uint8_t cacheDisabled:1;
+  uint8_t accessed:1;
+  uint8_t reserved:1; //always 0?
+  uint8_t dirty:1; // always 0 for 4kb
+  uint8_t ignored:1;
+  uint8_t unused:3;
+  uint32_t pAddr:20;
+} pageTable_int_t __attribute__((aligned(4)));
 
 
+typedef struct _page_dir_int{
+  uint8_t present:1;
+  uint8_t rw:1;
+  uint8_t user:1;
+  uint8_t writeThru:1;
+  uint8_t dirty:1;
+  uint8_t accessed:1;
+  uint8_t reserved:1; //always 0?
+  uint8_t pageSize:1; // always 0 for 4kb
+  uint8_t ignored:1;
+  uint8_t unused:3;
+  uint32_t ptableAddr:20;
+} pageDir_int_t;__attribute__((aligned(4)));
+
+typedef union _pageDir{
+  pageDir_int_t asPDIT;
+  uint32_t asUI;
+} pageDir_t __attribute__((aligned(4)));
+
+#ifdef CONFIG_IX86_PAE_
+
+#endif
+#ifdef CONFIG_IX86_NON_PAE_
+
+#endif
 //void setupBasicPaging();
 void paging_init();
 

@@ -1,3 +1,4 @@
+#include "../include/config.h"
 #include "../include/internal.h"
 #include "../include/multiboot.h"
 #include "../include/tty.h"
@@ -16,7 +17,9 @@
 * Kernel Information
 */
 
- _internal_kernel_info _kInfo = {{"Libre-OS","Alpha"} , {0,0,1,0}};
+ _internal_kernel_info _kInfo = {{"Libre-OS",VERSIONSTRING} ,
+                                {VERSIONMAJOR,VERSIONMINOR,
+                                  VERSIONBUG,VERSIONTWEAK}};
  _cpuidProf cpuidProf;
  _vmmu vmmu;
 
@@ -87,6 +90,13 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   initMem(&vmmu,mbt);
   paging_init();
   initTasking();
+  uint32_t *foo = kmalloc(sizeof(uint32_t));
+  uint32_t *bar = kmalloc(sizeof(uint32_t));
+  printk("VMMU Memory maps : %d\n",vmmu.availableMemAmount);
+  for(unsigned int i = 0; i < vmmu.availableMemAmount;i++){
+  printk("Memory Map #%d : Address : %X  Size: %U\n",
+            i,vmmu.availAddrStart[i],vmmu.availAddrSize[i]);
+  }
   //ata_init();
 
 

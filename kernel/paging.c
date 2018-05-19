@@ -1,5 +1,6 @@
 #include "../include/config.h"
 #include "../include/paging.h"
+#include "../arch/iX86/mm.h"
 #include "../libc/include/sys/cdefs.h"
 #include "../include/inlineAssembly.h"
 #include "../include/tty.h"
@@ -57,7 +58,11 @@ void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys)
 	}
 	page_directory[id] = ((uint32_t)last_page) | 3;
 	last_page = (uint32_t *)(((uint32_t)last_page) + 4096);
+
+  #if CONFIG_VERBOSE_KERNEL
 	printk("Mapping 0x%x(%d) to 0x%x\n", virt, id, phys);
+  #endif
+
 }
 
 void paging_enable()
@@ -70,8 +75,9 @@ void paging_enable()
 
 void paging_init()
 {
+  //kvmmu.kheap_mem_end
 	printk("Setting up paging\n");
-	page_directory = (uint32_t*)0x400000;
+	page_directory = (uint32_t*)kvmmu.kheap_mem_end;
 	page_dir_loc = (uint32_t)page_directory;
 	last_page = (uint32_t *)0x404000;
 	for(int i = 0; i < 1024; i++)
@@ -81,5 +87,10 @@ void paging_init()
 	paging_map_virtual_to_phys(0, 0);
 	paging_map_virtual_to_phys(0x400000, 0x400000);
 	paging_enable();
+
+  #if CONFIG_VERBOSE_KERNEL
+  printk("Page Directory Set at : %x\n",page_directory);
+  printk("Last Page at : 0x%x\n", last_page);
 	printk("Paging was successfully enabled!\n");
+  #endif
 }
