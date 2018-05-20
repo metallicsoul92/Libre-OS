@@ -44,15 +44,26 @@ typedef struct __internal_kernel_name _internal_kernel_name;
 typedef struct {
     _internal_kernel_name name;
     _internal_kernel_version version;
+    char * archType;
 } _internal_kernel_info;
 
  extern _internal_kernel_info _kInfo;
 
-const char *archList[]={
+const char * archList[]={
   "x86","x86_64","ARM"
 };
 
+void detectArch(_internal_kernel_info * info){
+  #ifdef __IX86__
+    info->archType = "X86";
+  #endif
+  #ifdef __X86_64__
+  info->archType = "X86_64";
+  #endif
+  #ifdef __ARM__
+  info->archType = "ARM";
+  #endif
 
-
+}
 
 #endif // Internal.h

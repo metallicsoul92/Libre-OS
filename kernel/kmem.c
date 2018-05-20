@@ -62,19 +62,19 @@ const char *memtypes[]={
 #define MAX_PALIGN_ALLOCS 32
 void initMem(_vmmu * vmmu , multiboot_info_t * mb ){
                 vmmu->availableMemAmount = 0;
-                #if CONFIG_VERBOSE_KERNEL
+                #ifdef CONFIG_VERBOSE_KERNEL
                 printk("Pulling mmap from GRUB\n");
                 #endif
 
                 multiboot_memory_map_t *mmap = mb->mmap_addr;
 
-                #if CONFIG_VERBOSE_KERNEL
+                #ifdef CONFIG_VERBOSE_KERNEL
                 printk("Memory Address : 0x%x , Length : %d\n", mb->mmap_addr, mb->mmap_length);
                 #endif
 
                 while(mmap < mb->mmap_addr + mb->mmap_length){
 
-                  #if CONFIG_VERBOSE_KERNEL
+                  #ifdef CONFIG_VERBOSE_KERNEL
                   printk("Memory Address At : 0x%X  Length: %U kb type: %u (%s) \n",
                   mmap->addr, mmap->len , mmap->type, memtypes[(mmap->type-1)]);
                   #endif
@@ -96,7 +96,7 @@ void initMem(_vmmu * vmmu , multiboot_info_t * mb ){
                 memset((char *)vmmu->heap_begin,0,(vmmu->heap_end - vmmu->heap_begin));
                 vmmu->pageDesc = (uint8_t *)kmalloc(MAX_PALIGN_ALLOCS);
 
-                #if CONFIG_VERBOSE_KERNEL
+                #ifdef CONFIG_VERBOSE_KERNEL
                 printk("VMMU Data:\n");
                 printk("Kernel End: 0x%x\nKernel Heap Begin: 0x%x   Kernel Heap End: 0x%x\n",vmmu->kmem_end,
                         vmmu->kheap_mem,vmmu->kheap_mem_end);

@@ -16,10 +16,10 @@
 /**
 * Kernel Information
 */
-
  _internal_kernel_info _kInfo = {{"Libre-OS",VERSIONSTRING} ,
                                 {VERSIONMAJOR,VERSIONMINOR,
-                                  VERSIONBUG,VERSIONTWEAK}};
+                                  VERSIONBUG,VERSIONTWEAK} ,
+                                  NULL};
  _cpuidProf cpuidProf;
  _vmmu vmmu;
 
@@ -68,6 +68,8 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
 
 //Other Functions here
   printk("Welcome to %s     Version: %s\n",_kInfo.name.name,_kInfo.name.versionName);
+  detectArch(&_kInfo);
+  printk("Architecture : %s\n", _kInfo.archType);
   printk("Multiboot Flags: 0x%x\n",mbt->flags);
   printk("Multiboot addr : 0x%x\n", addr);
   printk("Multiboot Memory Low: 0x%x\nMultiboot Memory Upper: 0x%x\n",mbt->mem_lower,mbt->mem_upper);
@@ -90,8 +92,6 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   initMem(&vmmu,mbt);
   paging_init();
   initTasking();
-  uint32_t *foo = kmalloc(sizeof(uint32_t));
-  uint32_t *bar = kmalloc(sizeof(uint32_t));
   printk("VMMU Memory maps : %d\n",vmmu.availableMemAmount);
   for(unsigned int i = 0; i < vmmu.availableMemAmount;i++){
   printk("Memory Map #%d : Address : %X  Size: %U\n",

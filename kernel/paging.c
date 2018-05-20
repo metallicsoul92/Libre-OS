@@ -37,9 +37,21 @@ void setupBasicPaging(){
 
   **/
 
-  static uint32_t* page_directory = 0;
+
+static uint32_t page_dir_loc = 0;
+#ifdef CONFIG_IX86_NON_PAE_
+static page_dir_t * page_directory = 0;
+#endif
+#ifdef CONFIG_IX86_PAE_
+static ptpd_t * _ptpd = 0;
+#endif
+pageTable_entry_t * last_page = 0;
+/*
+static uint32_t* page_directory = 0;
 static uint32_t page_dir_loc = 0;
 static uint32_t* last_page = 0;
+*/
+
 
 /* Paging now will be really simple
  * we reserve 0-8MB for kernel stuff
@@ -53,15 +65,15 @@ void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys)
 	uint16_t id = virt >> 22;
 	for(int i = 0; i < 1024; i++)
 	{
-		last_page[i] = phys | 3;
+		last_page[i].asUI = phys | 3;
 		phys += 4096;
 	}
-	page_directory[id] = ((uint32_t)last_page) | 3;
-	last_page = (uint32_t *)(((uint32_t)last_page) + 4096);
+	page_directory[id].entries[id].asUI = ((uint32_t)last_page) | 3;
+	last_page = (pageTable_entry_t *)(((uint32_t)last_page) + 4096);
 
-  #if CONFIG_VERBOSE_KERNEL
+//#ifdef CONFIG_VERBOSE_KERNEL
 	printk("Mapping 0x%x(%d) to 0x%x\n", virt, id, phys);
-  #endif
+//#endif
 
 }
 
@@ -77,20 +89,20 @@ void paging_init()
 {
   //kvmmu.kheap_mem_end
 	printk("Setting up paging\n");
-	page_directory = (uint32_t*)kvmmu.kheap_mem_end;
+	page_directory = (page_dir_t*)kvmmu.kheap_mem_end;
 	page_dir_loc = (uint32_t)page_directory;
-	last_page = (uint32_t *)0x404000;
+	last_page = (pageTable_entry_t*)0x404000;
 	for(int i = 0; i < 1024; i++)
 	{
-		page_directory[i] = 0 | 2;
+		page_directory->entries[i].asUI = 0 | 2;
 	}
 	paging_map_virtual_to_phys(0, 0);
 	paging_map_virtual_to_phys(0x400000, 0x400000);
 	paging_enable();
 
-  #if CONFIG_VERBOSE_KERNEL
+#ifdef CONFIG_VERBOSE_KERNEL
   printk("Page Directory Set at : %x\n",page_directory);
   printk("Last Page at : 0x%x\n", last_page);
 	printk("Paging was successfully enabled!\n");
-  #endif
+#endif
 }

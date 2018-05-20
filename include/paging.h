@@ -23,7 +23,7 @@
 /* the no. of pointers that fit on a page */
 #define PTRS_PER_PAGE			(PAGE_SIZE/sizeof(void*))
 
-typedef struct _page_table_int{
+typedef struct _page_table_entry_int{
   uint8_t present:1;
   uint8_t rw:1;
   uint8_t user:1;
@@ -35,10 +35,14 @@ typedef struct _page_table_int{
   uint8_t ignored:1;
   uint8_t unused:3;
   uint32_t pAddr:20;
-} pageTable_int_t __attribute__((aligned(4)));
+} pageTable_entry_int_t __attribute__((aligned(4)));
 
+typedef union _pagetable_int{
+  pageTable_entry_int_t asPDIT;
+  uint32_t asUI;
+} pageTable_entry_t __attribute__((aligned(4)));
 
-typedef struct _page_dir_int{
+typedef struct _page_dir_entry_int{
   uint8_t present:1;
   uint8_t rw:1;
   uint8_t user:1;
@@ -50,15 +54,22 @@ typedef struct _page_dir_int{
   uint8_t ignored:1;
   uint8_t unused:3;
   uint32_t ptableAddr:20;
-} pageDir_int_t;__attribute__((aligned(4)));
+} pageDir_entry_int_t __attribute__((aligned(4)));
 
-typedef union _pageDir{
-  pageDir_int_t asPDIT;
+typedef union _pageDir_entry{
+  pageDir_entry_int_t asPDIT;
   uint32_t asUI;
-} pageDir_t __attribute__((aligned(4)));
+} pageDir_entry_t __attribute__((aligned(4)));
+
+typedef struct pageDirectory{
+  pageDir_entry_t entries[1024];
+} page_dir_t;
 
 #ifdef CONFIG_IX86_PAE_
 
+typedef struct ptpd{
+  page_dir_t directories[4];
+} ptpd_t;
 #endif
 #ifdef CONFIG_IX86_NON_PAE_
 
