@@ -44,6 +44,10 @@ char versionString[32];
 
 int kernel_main(unsigned long magic, unsigned long addr){
 
+
+  //Initialization here
+   initializeTerminal();
+
 //Pre-Boot Shit
   if(magic != MULTIBOOT_BOOTLOADER_MAGIC){
     printk("Error Multiboot magic invalid");
@@ -51,9 +55,8 @@ int kernel_main(unsigned long magic, unsigned long addr){
 
   mbt =(multiboot_info_t *) addr;
 
-//Initialization here
- initializeTerminal();
- gdt_install();
+//More Initialization here
+  gdt_install();
  	idt_install();
  	isrs_install();
  	irq_install();
