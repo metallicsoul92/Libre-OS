@@ -56,6 +56,7 @@ _start:
 jmp     multiboot_entry
 
 multiboot_entry:
+
         /* Initialize the stack pointer. */
         movl    $(stack + STACK_SIZE), %esp
 
@@ -63,7 +64,12 @@ multiboot_entry:
         pushl   $0
         popf
 
-        call _init
+
+        /* Todo: Figure out what to do with initializing the libc with    */
+        /* _init. As of right now it is not important to use it, because  */
+        /* it will only mess with the parameters passed into kernel_main()*/
+        /* call _init                                                     */
+
         /* Push the pointer to the Multiboot information structure. */
         pushl   %ebx
         /* Push the magic value. */

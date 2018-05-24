@@ -12,6 +12,7 @@ paging.o\
 task.o\
 tty.o\
 cmos.o\
+cpufeatures.o\
 kernel.o\
 
 CFLAGS:=$(CFLAGS) -g -ffreestanding -Wall -Wextra
