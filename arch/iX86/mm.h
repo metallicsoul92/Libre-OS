@@ -10,6 +10,7 @@
 #define HAS_CDEFS 1
 #endif
 
+
 struct __vmmu_{
 
   uint32_t kmem_end;
@@ -23,6 +24,9 @@ struct __vmmu_{
   uint64_t availAddrStart[6];
   uint64_t availAddrSize[6];
   uint8_t availableMemAmount;
+
+  uint32_t *_pmap;
+  unsigned int initramamount;
 };
 
 typedef struct __vmmu_ _vmmu;

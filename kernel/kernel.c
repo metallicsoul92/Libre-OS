@@ -96,10 +96,10 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   initMem(&vmmu,mbt);
   paging_init();
   initTasking();
-//  printk("VMMU Memory maps : %d\n",vmmu.availableMemAmount);
+  printk("VMMU Memory maps : %d\n",vmmu.availableMemAmount);
   for(unsigned int i = 0; i < vmmu.availableMemAmount;i++){
-  //printk("Memory Map #%d : Address : %X  Size: %U\n",
-  //          i,vmmu.availAddrStart[i],vmmu.availAddrSize[i]);
+  printk("Memory Map #%d : Address : %X  Size: %U\n",
+            i,vmmu.availAddrStart[i],vmmu.availAddrSize[i]);
   }
   //ata_init();
 
