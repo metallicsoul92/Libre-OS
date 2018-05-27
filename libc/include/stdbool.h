@@ -5,8 +5,8 @@
 
 #ifndef HAS_BOOL
 #define bool uint8_t
-#define true 0
-#define false !true
+#define false 0
+#define true !false
 
 #define HAS_BOOL 1
 #endif

@@ -1,10 +1,11 @@
-#ifndef SYS_STAT_H
-#define SYS_STAT_H
+#ifndef LIBC_STAT_H
+#define LIBC_STAT_H
 
 #include "cdefs.h"
 
 
-
+#ifndef _HAS_STAT
+#define _HAS_STAT
 struct stat{
   dev_t st_dev;
   ino_t st_ino;
@@ -20,7 +21,9 @@ struct stat{
   blksize_t st_blksize;
   blkcnt_t st_blocks;
 };
+#endif // Has Stat
 
+/* Not standard, used for convenience */
 typedef struct stat stat_t;
 
 /* File Types */

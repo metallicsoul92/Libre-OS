@@ -35,6 +35,7 @@ $(KERNELBINDIR)/paging.o\
 $(KERNELBINDIR)/tty.o\
 $(KERNELBINDIR)/task.o\
 $(KERNELBINDIR)/cmos.o \
+$(KERNELBINDIR)/cpufeatures.o\
 $(KERNELBINDIR)/kernel.o
 
 DRIVERSOBJS=\
