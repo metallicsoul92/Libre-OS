@@ -13,7 +13,13 @@
 extern "C" {
 #endif
 
+#ifndef HAS_IOLOCK
 typedef void _IO_lock_t;
+#define HAS_IOLOCK 1
+#endif
+
+
+#ifndef HAS_FILE
 struct __IO_FILE{
     int _flags;
     //Read
@@ -43,7 +49,7 @@ struct __IO_FILE{
   #endif
     off_t _old_offset; /* This used to be _offset but it's too small.  */
 
-  #define __HAVE_COLUMN /* temporary */
+  #define __HAS_COLUMN /* temporary */
     /* 1+column number of pbase(); 0 is unknown. */
     unsigned short _cur_column;
     signed char _vtable_offset;
@@ -56,6 +62,9 @@ struct __IO_FILE{
 
 
 typedef struct  __IO_FILE __FILE;
+typedef __FILE FILE;
+#define HAS_FILE 1
+#endif
 
 
 extern struct __IO_FILE * stdin;
