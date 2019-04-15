@@ -26,7 +26,9 @@ mkdir -p isodir/usr/include
 mkdir -p isodir/usr/include/libk
 mkdir -p isodir/usr/include/kernel
 mkdir -p isodir/usr/include/kernel/arch
-mkdir -p isodir/usr/lib
+mkdir -p isodir/usr/lib/libk
+mkdir -p isodir/usr/lib/libk/src
+mkdir -p isodir/usr/lib/libk/src/sys
 mkdir -p isodir/usr/lib32
 mkdir -p isodir/usr/lib64
 mkdir -p isodir/usr/local
@@ -36,7 +38,7 @@ mkdir -p isodir/usr/src
 mkdir -p isodir/usr/X11R6
 mkdir -p isodir/var
 mkdir -p isodir/var/cache
-mkdir -p isordir/var/lib
+mkdir -p isodir/var/lib
 mkdir -p isodir/var/lock
 mkdir -p isodir/var/log
 mkdir -p isodir/var/mail
@@ -48,7 +50,8 @@ mkdir -p isodir/var/tmp
 
 
 cp bin/kernel.ix86 isodir/boot/libreOS.kernel
-cp bin/libc/libk.a isodir/lib/libk/libk.a
+cp -r bin/libc/*/*/* isodir/lib/libk/
+
 
 cp arch/iX86/*.h isodir/usr/include/kernel/arch/
 cp -r include/* isodir/usr/include/kernel/

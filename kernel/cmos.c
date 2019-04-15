@@ -2,7 +2,7 @@
 #include "../include/inlineAssembly.h"
 #include "../libc/include/time.h"
 
-#define CURRENT_YEAR        2018                         // Change this each year!
+#define CURRENT_YEAR        2019                         // Change this each year!
 
 int century_register = 0x00;                                // Set by ACPI table parsing code if possible
 
