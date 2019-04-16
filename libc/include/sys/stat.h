@@ -5,7 +5,7 @@
 
 
 #ifndef _HAS_STAT
-#define _HAS_STAT
+#define _HAS_STAT 1
 struct stat{
   dev_t st_dev;
   ino_t st_ino;
@@ -37,10 +37,35 @@ typedef struct stat stat_t;
 /* Protection Bits */
 #define S_ISUID   04000
 #define S_ISGID   02000
-#define S_IREAD    0400
-#define S_IWRITE   0200
-#define S_IEXEC    0100
+#define S_IRWXU   0700 //RWE/ Search by owner
+#define S_IRUSR   0400 //Read Permission, owner
+#define S_IWUSR   0200 //Write Permission, owner
+#define S_IXUSR   0100 //Execute/search permission, owner
+#define S_IRWXG   070  //Read, write, execute/search by group
+#define S_IRGRP   040  //Read PErmission , group
+#define S_IWGRP   020  //Write PEmission, group
+#define S_IXGRP   010  //Execute/search permission, group
+#define S_IRWXO   07   //Read, Write, execute/search by others
+#define S_IROTH   04  //Read permission oothers
+#define S_IWOTH   02  //Write perission others
+#define S_IXOTH   01  //Execute/search others
 
+int    chmod(const char *, mode_t);
+int    fchmod(int, mode_t);
+int    fchmodat(int, const char *, mode_t, int);
+int    fstat(int, struct stat *);
+int    fstatat(int, const char *restrict, struct stat *restrict, int);
+int    futimens(int, const struct timespec [2]);
+int    lstat(const char *restrict, struct stat *restrict);
+int    mkdir(const char *, mode_t);
+int    mkdirat(int, const char *, mode_t);
+int    mkfifo(const char *, mode_t);
+int    mkfifoat(int, const char *, mode_t);
+int    mknod(const char *, mode_t, dev_t);
+int    mknodat(int, const char *, mode_t, dev_t);
+int    stat(const char *restrict, struct stat *restrict);
+mode_t umask(mode_t);
+int    utimensat(int, const char *, const struct timespec [2], int);
 
 
 #endif
