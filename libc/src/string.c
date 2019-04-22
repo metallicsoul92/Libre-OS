@@ -73,14 +73,14 @@ size_t strlen(const char* str) {
 	return len;
 }
 
-char *strcpy(const char *src,char *dst)
+char *strcpy(char *dst,const char *src)
 {
   char *cp = dst;
   while (*cp++ = *src++);
   return dst;
 }
 
-char * strcat(const char *source,char * destination){
+char * strcat(char * destination, const char *source){
 	size_t i,j;
 	for(i=0;destination[i] != '\0';i++);
 	for(j=0;source[j]!='\0';j++){

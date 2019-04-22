@@ -50,22 +50,22 @@ void featureString(char * output,uint32_t ecx, uint32_t edx){
   for(int i = 0; i < 32; i++){
 
        if(ecx & (1 << i)){
-         strcat(__featECX[i],output);
+         strcat(output,__featECX[i]);
          if(i == 30){
          }else{
-           strcat(",",output);
+           strcat(output,",",);
          }
        }
   }
 
-  strcat("\n",output);
+  strcat(output,"\n");
 
   for(int n = 0; n < 32; n++){
   if(edx & (1 << n)){
-    strcat(__featEDX[n],output);
+    strcat(output,__featEDX[n]);
     if(n == 30){
     }else{
-      strcat(",",output);
+      strcat(output,",");
     }
   }
 }

@@ -84,12 +84,11 @@ static uint32_t* last_page = 0;
 
 */
 
-void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys)
-{
-#ifdef CONFIG_IX86_NON_PAE_
-	uint16_t id = virt >> 22;
-	#ifdef CONFIG_VERBOSE_KERNEL
-		printk("id 0x%x, virtual: 0x%x\n", id, virt);
+void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys){
+	#ifdef CONFIG_IX86_NON_PAE_
+		uint16_t id = virt >> 22;
+		#ifdef CONFIG_VERBOSE_KERNEL
+			printk("id 0x%x, virtual: 0x%x\n", id, virt);
 		#endif// verbose kernel output
 		for(int i = 0; i < 1024; i++)
 		{
@@ -104,33 +103,34 @@ void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys)
 		last_page = (pageTableEntry_t *)(((uint32_t)last_page) + 4096);
 
 		#ifdef CONFIG_VERBOSE_KERNEL
-		printk("Mapping 0x%x(%d) to 0x%x\n", virt, id, phys);
+			printk("Mapping 0x%x(%d) to 0x%x\n", virt, id, phys);
 		#endif // verbose kernel output
-#endif //Config NON PAE for ix86
+	#endif //Config NON PAE for ix86
 
-#ifdef CONFIG_IX86_PAE_
-	uint16_t id = virt >> 22;
-	/* Ok Hear me out..... Im gonna try to determine via currentTab and currentDir
-	 which table entry to map.... */
-	#ifdef CONFIG_VERBOSE_KERNEL
-		printk("id 0x%x, virtual: 0x%x\n", id, virt);
-	#endif// verbose kernel output
-	for(int i = 0; i < 512; i++)
-	{
+	#ifdef CONFIG_IX86_PAE_
+		uint16_t id = virt >> 22;
+
+			/* Ok Hear me out..... Im gonna try to determine via currentTab and currentDir
+			which table entry to map.... */
+
 		#ifdef CONFIG_VERBOSE_KERNEL
-			printk("Physical Address Being mapped: 0x%x\n",phys);
+			printk("id 0x%x, virtual: 0x%x\n", id, virt);
 		#endif// verbose kernel output
-		pageDirPtrTab->directories[currentDir].entries[currentDir].asUI = phys | 3;
-		phys += 8192;
-	}
-	currentTab++;
-	page_dir_ptr_tab[currentDir] = ((uint32_t)last_page) | 3;
-	last_page = (pageTableEntry_t *)(((uint32_t)last_page) + 8192);
-#endif
+		for(int i = 0; i < 512; i++)
+		{
+			#ifdef CONFIG_VERBOSE_KERNEL
+				printk("Physical Address Being mapped: 0x%x\n",phys);
+			#endif// verbose kernel output
+			pageDirPtrTab->directories[currentDir].entries[currentDir].asUI = phys | 3;
+			phys += 8192;
+		}
+		currentTab++;
+		page_dir_ptr_tab[currentDir] = ((uint32_t)last_page) | 3;
+		last_page = (pageTableEntry_t *)(((uint32_t)last_page) + 8192);
+	#endif
 }
 
-void paging_enable()
-{
+void paging_enable(){
 	#ifdef CONFIG_IX86_PAE_
 		asm volatile ("movl %cr4, %eax; bts $5, %eax; movl %eax, %cr4"); // set bit5 in CR4 to enable PAE
 		asm volatile("mov %%eax, %%cr3": :"a"(&page_dir_ptr_tab));
@@ -143,12 +143,11 @@ void paging_enable()
 		asm volatile("mov %eax, %cr0");
 }
 
-void paging_init()
-{
+void paging_init(){
   //kvmmu.kheap_mem_end
 	printk("Setting up paging\n");
 
-#ifdef CONFIG_IX86_NON_PAE_
+	#ifdef CONFIG_IX86_NON_PAE_
 	printk("Size of Page directory structure : %d\n",sizeof(page_dir_t));
 	page_directory = (page_dir_t*)kvmmu.kheap_mem_end;
 	//page_directory = (page_dir_t*)kmalloc(sizeof(page_dir_t));
@@ -176,14 +175,14 @@ void paging_init()
 		printk("Paging was successfully enabled!\n");
 	#endif
 
-#endif //CONFIG_IX86_NON_PAE_
+	#endif //CONFIG_IX86_NON_PAE_
 
-#ifdef CONFIG_IX86_PAE_
-	page_dir_ptr_tab[0] = (uint64_t)&page_dir | 1; // set the page directory into the PDPT and mark it present
-	page_dir[0] = (uint64_t)&page_tab | 3; //set the page table into the PD and mark it present/writable
-	pageDirPtrTab = &page_dir_ptr_tab;
-	last_page = (pageTableEntry_t*)0x404000;
-	unsigned int i, address = 0;
+	#ifdef CONFIG_IX86_PAE_
+		page_dir_ptr_tab[0] = (uint64_t)&page_dir | 1; // set the page directory into the PDPT and mark it present
+		page_dir[0] = (uint64_t)&page_tab | 3; //set the page table into the PD and mark it present/writable
+		pageDirPtrTab = &page_dir_ptr_tab;
+		last_page = (pageTableEntry_t*)0x404000;
+		unsigned int i, address = 0;
 		for(i = 0; i < 512; i++)
 		{
 			#ifdef CONFIG_VERBOSE_KERNEL
@@ -194,16 +193,14 @@ void paging_init()
 		}
 		currentDir++; //Right? i map the first page,
 									//no need to iterate over currentTab
-	paging_map_virtual_to_phys(0, 0);
-	paging_map_virtual_to_phys(0x400000, 0x400000);
+		paging_map_virtual_to_phys(0, 0);
+		paging_map_virtual_to_phys(0x400000, 0x400000);
 	/*for(uint32_t i = 0; i < 128; i++){
 		paging_map_virtual_to_phys((i)*0x400000,i*0x400000);
 	}
 	*/
-#endif
+	#endif
 
 
 	paging_enable();
-
-
 }

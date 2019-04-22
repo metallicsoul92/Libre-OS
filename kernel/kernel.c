@@ -28,14 +28,14 @@ char versionString[32];
    const char * vInfo[4] = {STR(v.maj),STR(v.min),
                            STR(v.bug),STR(v.tweak)};
                    memset(versionString,0,sizeof(versionString));
-                   strcat(vInfo[0],versionString);
-                   strcat(".",versionString);
-                   strcat(vInfo[1],versionString);
-                   strcat(".",versionString);
-                   strcat(vInfo[2],versionString);
-                   strcat(".",versionString);
-                   strcat(vInfo[3],versionString);
-                   strcat(".",versionString);
+                   strcat(versionString,vInfo[0]);
+                   strcat(versionString,".");
+                   strcat(versionString,vInfo[1]);
+                   strcat(versionString,".");
+                   strcat(versionString,vInfo[2]);
+                   strcat(versionString,".");
+                   strcat(versionString,vInfo[3]);
+                   strcat(versionString,".");
 }
 /**
 *Multiboot Information
