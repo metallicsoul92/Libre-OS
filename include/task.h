@@ -43,9 +43,9 @@ typedef struct Task {
     uint32_t maxChildren;
 } task_t;
 
- void createTask_sp(Task*, void(*)(), uint32_t, uint32_t*);
+ void createTask_sp(task_t*, void(*)(), uint32_t, uint32_t*);
  task_t *createTask_p(void(*main)(), uint32_t flags, uint32_t *pagedir);
- void spawnTask_sp(Task *task, void (*main)(), uint32_t flags, uint32_t *pagedir);
+ void spawnTask_sp(task_t *task, void (*main)(), uint32_t flags, uint32_t *pagedir);
  task_t *spawnTask_p(void (*main)(), uint32_t flags, uint32_t *pagedir);
 
 

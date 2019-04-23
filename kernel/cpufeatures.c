@@ -53,7 +53,7 @@ void featureString(char * output,uint32_t ecx, uint32_t edx){
          strcat(output,__featECX[i]);
          if(i == 30){
          }else{
-           strcat(output,",",);
+           strcat(output,",");
          }
        }
   }

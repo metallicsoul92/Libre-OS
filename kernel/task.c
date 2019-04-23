@@ -1,6 +1,11 @@
 #include "../include/task.h"
 #include "../include/kmem.h"
 
+#ifndef HAS_NULL
+#define NULL ((void*)0)
+#define HAS_NULL 1
+#endif
+
 
 #if __IX86__ == 1
 
@@ -50,13 +55,13 @@ task_t *createTask_p(void(*main)(), uint32_t flags, uint32_t *pagedir){
   newTask->parent = NULL;
   newTask->children = NULL;
   newTask->numChildren = 0;
-  newtask->maxChildren = 0;
+  newTask->maxChildren = 0;
 
   return newTask;
 }
 
 // Creates a task safely (thru parameter passing), and give it a page directory
-void createTask_sp(Task *task, void (*main)(), uint32_t flags, uint32_t *pagedir) {
+void createTask_sp(task_t *task, void (*main)(), uint32_t flags, uint32_t *pagedir) {
     task->regs.eax = 0;
     task->regs.ebx = 0;
     task->regs.ecx = 0;
@@ -82,7 +87,7 @@ void createTask_sp(Task *task, void (*main)(), uint32_t flags, uint32_t *pagedir
 //          b. Alloc page specifically for CR3
 
 
-void spawnTask_sp(Task *task, void (*main)(), uint32_t flags, uint32_t *pagedir) {
+void spawnTask_sp(task_t *task, void (*main)(), uint32_t flags, uint32_t *pagedir) {
   task->regs.eax = 0;
   task->regs.ebx = 0;
   task->regs.ecx = 0;
@@ -96,7 +101,7 @@ void spawnTask_sp(Task *task, void (*main)(), uint32_t flags, uint32_t *pagedir)
   task->next = NULL;
   task->prev = NULL;
   task->parent = runningTask;
-  task->children = NULL
+  task->children = NULL;
   task->numChildren = 0;
   task->maxChildren = 0;
 
@@ -145,8 +150,8 @@ task_t *spawnTask_p(void (*main)(), uint32_t flags, uint32_t *pagedir){
   newTask->prev = NULL;
   newTask->parent = runningTask;
   newTask->children = NULL;
-  newtask->numChildren = 0;
-  newtask->maxChildren = 0;
+  newTask->numChildren = 0;
+  newTask->maxChildren = 0;
 
   //If this is the first spawn .
   if(runningTask->maxChildren == 0){
@@ -182,7 +187,7 @@ task_t *spawnTask_p(void (*main)(), uint32_t flags, uint32_t *pagedir){
 
 
 void yield() {
-    Task *last = runningTask;
+    task_t *last = runningTask;
     //If no children
     if(runningTask->children == NULL){
       //If no Parent
