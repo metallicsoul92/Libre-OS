@@ -1,8 +1,11 @@
+#!/usr/bin/env bash
+
 cd ../
-mkdir bin
-mkdir bin/libc
-mkdir bin/libc/src
-mkdir bin/libc/src/sys
-mkdir bin/kernel
-mkdir bin/kernel/asm
-mkdir bin/drivers
+mkdir -p bin
+mkdir -p bin/drivers
+mkdir -p bin/kernel
+mkdir -p bin/kernel/asm
+mkdir -p bin/kernel/src
+mkdir -p bin/libc
+mkdir -p bin/libc/src
+mkdir -p bin/libc/src/sys
