@@ -97,6 +97,13 @@ uint32_t kmalloc(uint32_t sz)
     return kmalloc_int(sz, 0, 0);
 }
 
+uint32_t kcalloc(uint32_t sz){
+  return (uint32_t)memset(kmalloc(sz),0,sz);
+}
+
+
+
+
 const char *memtypes[]={
   "Available", "Reserved", "ACPI","NVS","BADRAM"
 };

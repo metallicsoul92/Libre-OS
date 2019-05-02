@@ -26,6 +26,8 @@ void initTasking() {
     asm volatile("pushfl; movl (%%esp), %%eax; movl %%eax, %0; popfl;":"=m"(mainTask.regs.eflags)::"%eax");
 
     createTask_sp(&otherTask, &otherMain, mainTask.regs.eflags, (uint32_t*)mainTask.regs.cr3);
+    mainTask.priority = PRIORITY_MEDIUM;
+    mainTask.type = TYPE_PROCESS;
     mainTask.next = &otherTask;
     mainTask.prev = NULL;
     mainTask.parent  = NULL;
@@ -34,7 +36,9 @@ void initTasking() {
     otherTask.prev = &mainTask;
     otherTask.parent = NULL;
     otherTask.children = NULL;
+    otherTask.type = TYPE_PROCESS;
     runningTask = &mainTask;
+    runningTask.state = STATE_RUNNING;
 }
 
 //Dynamically Create task and give it a page directory.
@@ -50,6 +54,9 @@ task_t *createTask_p(void(*main)(), uint32_t flags, uint32_t *pagedir){
   newTask->regs.eip = (uint32_t) main;
   newTask->regs.cr3 = (uint32_t) pagedir;
   newTask->regs.esp = kmalloc(0x1000);
+  newTask->priority = PRIORITY_MEDIUM;
+  newTask->state = STATE_CREATED;
+  newTask->type = TYPE_PROCESS;
   newTask->next = NULL;
   newTask->prev = runningTask;
   newTask->parent = NULL;
@@ -72,6 +79,9 @@ void createTask_sp(task_t *task, void (*main)(), uint32_t flags, uint32_t *paged
     task->regs.eip = (uint32_t) main;
     task->regs.cr3 = (uint32_t) pagedir;
     task->regs.esp = kmalloc(0x1000);
+    task->priority = PRIORITY_MEDIUM;
+    task->state = STATE_CREATED;
+    task->type = TYPE_PROCESS;
     task->next = NULL;
     task->prev = runningTask;
     task->parent = NULL;
@@ -98,6 +108,9 @@ void spawnTask_sp(task_t *task, void (*main)(), uint32_t flags, uint32_t *pagedi
   task->regs.eip = (uint32_t) main;
   task->regs.cr3 = (uint32_t) pagedir;
   task->regs.esp = kmalloc(0x1000);
+  task->priority = PRIORITY_MEDIUM;
+  task->state = STATE_CREATED;
+  task->type = TYPE_THREAD;
   task->next = NULL;
   task->prev = NULL;
   task->parent = runningTask;
@@ -146,6 +159,9 @@ task_t *spawnTask_p(void (*main)(), uint32_t flags, uint32_t *pagedir){
   newTask->regs.eip = (uint32_t) main;
   newTask->regs.cr3 = (uint32_t) pagedir;
   newTask->regs.esp = kmalloc(0x1000);
+  newTask->priority = PRIORITY_MEDIUM;
+  newTask->state = STATE_CREATED;
+  newTask->type = TYPE_THREAD;
   newTask->next = NULL;
   newTask->prev = NULL;
   newTask->parent = runningTask;
@@ -188,6 +204,7 @@ task_t *spawnTask_p(void (*main)(), uint32_t flags, uint32_t *pagedir){
 
 void yield() {
     task_t *last = runningTask;
+    last->state = STATE_WAITING;
     //If no children
     if(runningTask->children == NULL){
       //If no Parent
@@ -219,6 +236,7 @@ void yield() {
     runningTask = runningTask->children[0];
     switchTask(&last->regs, &runningTask->regs);
   }
+  runningTask->state = STATE_RUNNING;
 }
 
 #endif

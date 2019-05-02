@@ -11,6 +11,26 @@
 #endif
 
 
+#define PRIORITY_LOWEST       1
+#define PRIORITY_LOWER        2
+#define PRIORTIY_LOW          3
+#define PRIORITY_MEDIUM       4
+#define PRIORITY_HIGH         5
+#define PRIORITY_HIGHER       6
+#define PRIORITY_HIGHEST      7
+
+#define STATE_CREATED         1
+#define STATE_WAITING         2
+#define STATE_BLOCKED         3
+#define STATE_TERMINATED      4
+#define STATE_SWAPPED_WAITING 5
+#define STATE_SWAPPED_BLOCKED 6
+#define STATE_RUNNING         7
+
+#define TYPE_PROCESS          1
+#define TYPE_THREAD           2
+
+
 #if __IX86__ == 1
 extern void initTasking();
 
@@ -34,6 +54,9 @@ typedef struct {
 //data structure?
 typedef struct Task {
     reg_t regs;
+    uint8_t priority;
+    uint8_t state;
+    uint8_t type;
     struct Task *prev;
     struct Task *next;
     struct Task *parent;
