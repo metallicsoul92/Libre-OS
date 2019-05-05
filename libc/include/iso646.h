@@ -1,5 +1,5 @@
-#ifndef ISO646_H_
-#define ISO646_H_
+#ifndef LIBC_ISO646_H_
+#define LIBC_ISO646_H_
 
 #define and &&
 #define and_eq &=

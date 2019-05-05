@@ -1,5 +1,5 @@
 #ifndef LIBC_UNISTD_H_
-#define LIBS_UNISTD_H_
+#define LIBC_UNISTD_H_
 
 
 typedef char int8_t;
@@ -66,7 +66,7 @@ long int     fpathconf(int, int);
 int          fsync(int);
 int          ftruncate(int, off_t);
 char        *getcwd(char *, size_t);
-int          getdtablesize(void); 
+int          getdtablesize(void);
 gid_t        getegid(void);
 uid_t        geteuid(void);
 gid_t        getgid(void);

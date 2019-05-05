@@ -1,5 +1,5 @@
-#ifndef LIMITS_H_
-#define LIMITS_H_
+#ifndef LIBC_LIMITS_H_
+#define LIBC_LIMITS_H_
 
 #define	CHAR_BIT	8		/* number of bits in a char */
 #define	MB_LEN_MAX	6		/* Allow 31 bit UTF2 */

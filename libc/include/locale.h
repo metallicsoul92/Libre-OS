@@ -1,5 +1,5 @@
-#ifndef LOCALE_H_
-#define LOCALE_H_
+#ifndef LIBC_LOCALE_H_
+#define LIBC_LOCALE_H_
 
 #ifndef HAS_LCONV
 struct lconv{

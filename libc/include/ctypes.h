@@ -1,5 +1,5 @@
-#ifndef CTYPES_H
-#define CTYPES_H 1
+#ifndef LIBC_CTYPES_H
+#define LIBC_CTYPES_H 1
 
 #include "sys/cdefs.h"
 

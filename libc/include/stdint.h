@@ -1,5 +1,5 @@
-#ifndef STDINT_H_
-#define STDINT_H_
+#ifndef LIBC_STDINT_H_
+#define LIBC_STDINT_H_
 
 
 typedef char int8_t;

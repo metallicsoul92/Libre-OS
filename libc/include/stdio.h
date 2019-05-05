@@ -1,5 +1,5 @@
-#ifndef _STDIO_H
-#define _STDIO_H 1
+#ifndef LIBC_STDIO_H
+#define LIBC_STDIO_H 1
 
 #include "sys/cdefs.h"
 

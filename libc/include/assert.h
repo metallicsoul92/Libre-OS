@@ -1,5 +1,5 @@
-#ifndef ASSERT_H_
-#define ASSERT_H_ 1
+#ifndef LIBC_ASSERT_H_
+#define LIBC_ASSERT_H_ 1
 
 
 #ifndef HAVE_ASSERT

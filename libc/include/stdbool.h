@@ -1,5 +1,5 @@
-#ifndef STDBOOL_H_
-#define STDBOOL_H_
+#ifndef LIBC_STDBOOL_H_
+#define LIBC_STDBOOL_H_
 
 #include "sys/cdefs.h"
 

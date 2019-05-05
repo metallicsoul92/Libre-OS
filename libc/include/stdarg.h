@@ -1,5 +1,5 @@
-#ifndef STDARG_H_
-#define STDARG_H_
+#ifndef LIBC_STDARG_H_
+#define LIBC_STDARG_H_
 
 
 #ifndef HAS_VARG

@@ -38,7 +38,7 @@ void initTasking() {
     otherTask.children = NULL;
     otherTask.type = TYPE_PROCESS;
     runningTask = &mainTask;
-    runningTask.state = STATE_RUNNING;
+    runningTask->state = STATE_RUNNING;
 }
 
 //Dynamically Create task and give it a page directory.
