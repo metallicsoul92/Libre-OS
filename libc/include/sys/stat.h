@@ -4,6 +4,21 @@
 #include "cdefs.h"
 
 
+#ifndef _HAS_TIME
+#define _HAS_TIME 1
+typedef int time_t;
+#endif
+
+#ifndef _HAS_BLKCNT
+#define _HAS_BLKCNT 1
+typedef int blkcnt_t;
+#endif
+
+#ifndef _HAS_BLKSIZE
+#define _HAS_BLKSIZE 1
+typedef int blksize_t;
+#endif
+
 #ifndef _HAS_STAT
 #define _HAS_STAT 1
 struct stat{
@@ -15,9 +30,9 @@ struct stat{
   gid_t st_gid;
   dev_t st_rdev;
   off_t st_size;
-  struct timespec st_atim;
-  struct timespec st_mtim;
-  struct timespec st_ctim;
+  time_t st_atim;
+  time_t st_mtim;
+  time_t st_ctim;
   blksize_t st_blksize;
   blkcnt_t st_blocks;
 };
@@ -52,20 +67,13 @@ typedef struct stat stat_t;
 
 int    chmod(const char *, mode_t);
 int    fchmod(int, mode_t);
-int    fchmodat(int, const char *, mode_t, int);
 int    fstat(int, struct stat *);
-int    fstatat(int, const char *restrict, struct stat *restrict, int);
-int    futimens(int, const struct timespec [2]);
-int    lstat(const char *restrict, struct stat *restrict);
+int    lstat(const char *, struct stat *);
 int    mkdir(const char *, mode_t);
-int    mkdirat(int, const char *, mode_t);
 int    mkfifo(const char *, mode_t);
-int    mkfifoat(int, const char *, mode_t);
 int    mknod(const char *, mode_t, dev_t);
-int    mknodat(int, const char *, mode_t, dev_t);
-int    stat(const char *restrict, struct stat *restrict);
+int    stat(const char *, struct stat *);
 mode_t umask(mode_t);
-int    utimensat(int, const char *, const struct timespec [2], int);
 
 
 #endif

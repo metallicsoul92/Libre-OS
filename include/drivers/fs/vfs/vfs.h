@@ -4,7 +4,9 @@
 #include "../../../../libc/include/stdlib.h"
 #include "../../../../libc/include/sys/cdefs.h"
 #include "../../../../libc/include/sys/stat.h"
-#include "../../../../libc/include/time.h"
+#include "../../../../libc/include/stddef.h"
+#include "../../../kmem.h"
+
 
 
 struct vfs_dirent{
@@ -30,7 +32,7 @@ struct vfs_uio {
     mode_t   mask;
     uint32_t flags;
 };
-typedfe struct vfs_uio uio_t;
+typedef struct vfs_uio uio_t;
 
 struct vfs_file{
     struct _vfs_inode *inode;
@@ -153,7 +155,7 @@ int vfsVmkdir(vfs_vnode_t *dir, const char *dname, uio_t *uio, vfs_inode_t **ref
 int vfsVunlink(vfs_vnode_t *dir, const char *fn, uio_t * uio);
 int vfsVfind(vfs_vnode_t * vnode, const char * name , vfs_vnode_t * child);
 int vfsVget(vfs_vnode_t *vnode, vfs_inode_t **inode);
-int vfsMap(struct vm_entry * entry); //TODO: Setup VM_ENTRY In memory managers
+int vfsMap(vm_entry_t * entry); //TODO: Setup VM_ENTRY In memory managers
 ssize_t vfsRead(vfs_inode_t *inode,off_t offset, size_t size, void *buffer);
 ssize_t vfsWrite(vfs_inode_t *inode,off_t offset, size_t size, void *buffer);
 ssize_t vfsReaddir(vfs_inode_t *inode, off_t offset, vfs_dirent_t *dirent);
@@ -179,7 +181,7 @@ int vfsUnlink(const char *path, uio_t *uio);
 int vfsStat(vfs_inode_t *inode, stat_t *statbuf);
 int vfsPermsCheck(vfs_file_t *file, uio_t * uio);
 
-vs_path_t *vfsGetMountpoint(char **tokens);
+vfs_path_t *vfsGetMountpoint(char **tokens);
 char **canonicalPath(const char * const path);
 int vfsParsePath(const char *path, uio_t *uio, char **abs_path);
 

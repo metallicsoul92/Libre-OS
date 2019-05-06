@@ -3,14 +3,14 @@
 #include "../include/stddef.h"
 
 
-unsigned char stdinWriteBuff[1024];
-unsigned char stdoutReadBuff[1024];
-unsigned char stderrReadBuff[1024];
+char stdinWriteBuff[1024];
+char stdoutReadBuff[1024];
+char stderrReadBuff[1024];
 
 
-unsigned char stdinPreBuff[1024];
-unsigned char stdoutPreBuff[1024];
-unsigned char stderrPreBuff[1024];
+char stdinPreBuff[1024];
+char stdoutPreBuff[1024];
+char stderrPreBuff[1024];
 
 
 struct __IO_FILE _stdin={

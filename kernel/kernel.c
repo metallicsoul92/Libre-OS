@@ -13,6 +13,7 @@
 #include "../include/task.h"
 #include "../libc/include/string.h"
 #include "../include/drivers/ata.h"
+#include "../include/drivers/fs/vfs/vfs.h"
 /**
 * Kernel Information
 */
@@ -22,6 +23,8 @@
                                   NULL};
  _cpuidProf cpuidProf;
  _vmmu vmmu;
+
+fs_t initVFS;
 
 char versionString[32];
  void generateVersionString(_internal_kernel_version * v){
@@ -101,6 +104,9 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   printk("Memory Map #%d : Address : %X  Size: %U\n",
             i,vmmu.availAddrStart[i],vmmu.availAddrSize[i]);
   }
+  vfsInit();
+  initVFS.name = "Kernel Virtual FS";
+  vfsInstall(&initVFS);
   //ata_init();
 
 

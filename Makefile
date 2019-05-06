@@ -39,7 +39,8 @@ $(KERNELBINDIR)/cpufeatures.o\
 $(KERNELBINDIR)/kernel.o
 
 DRIVERSOBJS=\
-$(DRIVERSBINDIR)/ata.o
+$(DRIVERSBINDIR)/ata.o\
+$(DRIVERSBINDIR)/fs/vfs/vfs.o
 
 LINK_LIST_ix86?=\
 $(KERNELASMBINDIR)/crti.o \
