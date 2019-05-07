@@ -136,6 +136,14 @@ struct _vfs_path{
 };
 typedef struct _vfs_path vfs_path_t;
 
+struct _vfs_node {
+    const char * name;
+    struct _vfs_node * children;
+    struct _vfs_node * parent;
+    vfs_inode_t * iref;
+};
+
+typedef struct _vfs_node vfs_node_t;
 
 extern list_fs_t *registered_fs;
 extern vfs_inode_t *vfs_root;

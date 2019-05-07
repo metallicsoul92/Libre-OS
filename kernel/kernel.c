@@ -107,6 +107,7 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   vfsInit();
   initVFS.name = "Kernel Virtual FS";
   vfsInstall(&initVFS);
+  
   //ata_init();
 
 

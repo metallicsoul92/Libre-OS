@@ -1,9 +1,60 @@
 #include "../../../include/drivers/fs/vfs/vfs.h"
 #include "../../../include/tty.h"
+#include "../../../libc/include/string.h"
 
 
 list_fs_t *registered_fs = NULL;
 vfs_inode_t *vfs_root = NULL;
+vfs_node_t vfs_node = { .name="/"};
+
+//utility Function
+char **tokenize(const char *s, char c)
+{
+    if (s == NULL || *s == '\0')
+        return NULL;
+
+    while (*s == c)
+        ++s;
+
+    char *tokens = strdup(s);
+
+    if (tokens == NULL)
+        return NULL;
+
+    int len = strlen(s);
+
+    if (!len) {
+        char **ret = kmalloc(sizeof(char *), &M_BUFFER, 0);
+        *ret = NULL;
+        return ret;
+    }
+
+    int i, count = 0;
+    for (i = 0; i < len; ++i) {
+        if (tokens[i] == c) {
+            tokens[i] = 0;
+            ++count;
+        }
+    }
+
+    if (s[len-1] != c)
+        ++count;
+
+    char **ret = kmalloc(sizeof(char *) * (count + 1), &M_BUFFER, 0);
+
+    int j = 0;
+    ret[j++] = tokens;
+
+    for (i = 0; i < strlen(s) - 1; ++i)
+        if (tokens[i] == 0)
+            ret[j++] = &tokens[i+1];
+
+    ret[j] = NULL;
+
+    return ret;
+}
+
+
 /*Functions*/
 void vfsInit(void){
   printk("Initializing Registered File System List\n");
@@ -20,6 +71,11 @@ int vfsInstall(fs_t * fs){
 
 void vfsMountRoot(vfs_inode_t *inode){
     //TODO: Implement this!
+    vfs_root = inode;
+    vfs_node.iref = inode;
+    vfs_node.children = NULL;
+    printk("vfs mounted at: %s\n",vfs_node.name);
+
  }
 int vfsBind(const char * path, vfs_inode_t *target){
     //TODO: Implement this!
@@ -151,8 +207,19 @@ int vfsUnlink(const char *path, uio_t *uio){
     return -1;
  }
 int vfsStat(vfs_inode_t *inode, stat_t *statbuf){
-    //TODO: Implement this!
-    return -1;
+    statbuf->st_dev = inode->device;
+    statbuf->st_ino = inode->ino;
+    statbuf->st_mode = inode->mode;
+    statbuf->st_nlink = inode->nlink;
+    statbuf->st_uid = inode->uid;
+    statbuf->st_gid = inode->gid;
+    statbuf->st_rdev = inode->rdevice;
+    statbuf->st_mtim = inode->mtime;
+    statbuf->st_atim = inode->atime;
+    statbuf->st_ctim = inode->ctime;
+    statbuf->st_blksize = inode->size;
+
+    return 0;
  }
 int vfsPermsCheck(vfs_file_t *file, uio_t * uio){
     //TODO: Implement this!
@@ -164,8 +231,8 @@ vfs_path_t *vfsGetMountpoint(char **tokens){
     return -1;
  }
 char **canonicalPath(const char * const path){
-    //TODO: Implement this!
-    return -1;
+  char **results = tokenize(path,'/');
+    return results;
  }
 int vfsParsePath(const char *path, uio_t *uio, char **abs_path){
     //TODO: Implement this!
