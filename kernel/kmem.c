@@ -194,4 +194,100 @@ void initMem(_vmmu * vmmu , multiboot_info_t * mb ){
 
               }
 
+vm_manager_t vm;
+
+void vm_manager_init(){
+  vm.size = 0;
+  vm.used = 0;
+  vm.head = NULL;
+  vm.tail = NULL;
+  vm.freed = NULL;
+}
+
+vm_entry_t * prevEntry(vm_entry_t *node){
+  if(memcmp(&vm.head,node,sizeof(vm_entry_t))){
+    return NULL;
+  }else if(memcmp(vm.head->next,node,sizeof(vm_entry_t))){
+    return vm.head;
+  }else{
+    vm_entry_t *temp = vm.head->next;
+    while(temp != NULL){
+      if(memcmp(temp->next,node, sizeof(vm_entry_t))){
+        return temp;
+      }else
+      temp = temp->next;
+    }
+  }
+  return NULL
+}
+
+
+vm_entry_t *vm_allocate(size_t size, uint32_t flags){
+  vm_entry_t * out = kmalloc(sizeof(vm_entry_t));
+  out->header = VM_HEAD;
+  out->flags = flags;
+  out->size = size;
+  out->address = kmalloc(size);
+  out->footer = VM_FOOT;
+  out->next = NULL;
+
+  if(vm.head == NULL){
+    vm.head = out;
+    vm.tail = out;
+  }else{
+    vm_entry_t * temp = entryTail(vm.head);
+    temp->next = out;
+    vm.tail = out;
+  }
+  vm.size +=size;
+  vm.used +=size;
+
+  return out->address[0];
+}
+
+vm_entry_t * entryTail(vm_entry_t * node){
+  if(node->next == NULL){
+    return node;
+  }else{
+    tail(node->next);
+  }
+}
+
+vm_entry_t * addressToEntry(void *address){
+  vm_entry_t * entry = (vm_entry_t*)(address - offsetof(vm_entry_t,address));
+    return entry;
+  }
+
+
+
+void vm_entry_free(void *address){
+    vm_entry_t *entry = addressToEntry(address);
+    uint32_t flags = entry->flags;
+    vm_entry_t *prev = prevEntry(entry);
+    prev->next = entry->next;
+    entry->next = NULL;
+    switch(flags){
+      case KR:
+      case KW:
+      case KX:
+      entry->flags = KF;
+      break;
+      case UR:
+      case UW:
+      case UX:
+      entry->flags = UF;
+      break;
+      case KF:
+      case UF:
+      prink("Error: Entry at %x Freed already.\n", address);
+      break;
+    }
+    if(vm.freed == NULL){
+      vm.freed = entry;
+    }else
+    vm_entry_t * freedTail = entryTail(vm.freed);
+    freedTail->next = entry;
+    vm.used -= entry->size;
+}
+
 #endif

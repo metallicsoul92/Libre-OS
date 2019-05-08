@@ -1,6 +1,7 @@
 #include "../../../include/drivers/fs/vfs/vfs.h"
 #include "../../../include/tty.h"
 #include "../../../libc/include/string.h"
+#include "../../../libc/include/errno.h"
 
 
 list_fs_t *registered_fs = NULL;
@@ -24,7 +25,7 @@ char **tokenize(const char *s, char c)
     int len = strlen(s);
 
     if (!len) {
-        char **ret = kmalloc(sizeof(char *), &M_BUFFER, 0);
+        char **ret = kmalloc(sizeof(char *));
         *ret = NULL;
         return ret;
     }
@@ -40,7 +41,7 @@ char **tokenize(const char *s, char c)
     if (s[len-1] != c)
         ++count;
 
-    char **ret = kmalloc(sizeof(char *) * (count + 1), &M_BUFFER, 0);
+    char **ret = kmalloc(sizeof(char *) * (count + 1));
 
     int j = 0;
     ret[j++] = tokens;
