@@ -12,7 +12,7 @@ typedef long unsigned int size_t;
 #endif
 
 #ifndef HAS_OFFSETOF
-#define offsetof(type,member) ((size_t)&(((type*)0)->member)
+#define offsetof(type,member) ((size_t)&(((type*)0)->member))
 #define HAS_OFFSETOF 1
 #endif
 

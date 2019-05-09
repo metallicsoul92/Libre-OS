@@ -218,11 +218,11 @@ vm_entry_t * prevEntry(vm_entry_t *node){
       temp = temp->next;
     }
   }
-  return NULL
+  return NULL;
 }
 
 
-vm_entry_t *vm_allocate(size_t size, uint32_t flags){
+void * vm_allocate(size_t size, uint32_t flags){
   vm_entry_t * out = kmalloc(sizeof(vm_entry_t));
   out->header = VM_HEAD;
   out->flags = flags;
@@ -249,8 +249,9 @@ vm_entry_t * entryTail(vm_entry_t * node){
   if(node->next == NULL){
     return node;
   }else{
-    tail(node->next);
+    entryTail(node->next);
   }
+  return NULL;
 }
 
 vm_entry_t * addressToEntry(void *address){
@@ -270,24 +271,26 @@ void vm_entry_free(void *address){
       case KR:
       case KW:
       case KX:
-      entry->flags = KF;
+      case KA:
+      entry->flags = F;
       break;
       case UR:
       case UW:
       case UX:
-      entry->flags = UF;
+      case UA:
+      entry->flags = F;
       break;
-      case KF:
-      case UF:
-      prink("Error: Entry at %x Freed already.\n", address);
+      case F:
+      printk("Error: Entry at %x Freed already.\n", address);
       break;
     }
     if(vm.freed == NULL){
       vm.freed = entry;
-    }else
+    }else{
     vm_entry_t * freedTail = entryTail(vm.freed);
     freedTail->next = entry;
     vm.used -= entry->size;
+  }
 }
 
 #endif

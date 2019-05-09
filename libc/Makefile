@@ -22,6 +22,7 @@ FREEOBJS=\
  src/fileimp.o\
  src/stdio.o\
  src/sleep.o\
+ src/mem.o\
  src/sys/utsname.o
 
 

@@ -8,6 +8,12 @@
 #endif
 #include "stddef.h"
 
+
+#ifndef HAS_SIZE_T
+typedef long unsigned int size_t;
+#define HAS_SIZE_T 1
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif

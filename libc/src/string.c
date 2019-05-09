@@ -1,4 +1,5 @@
 #include "../include/string.h"
+#include "../include/stdlib.h"
 
 
 void *memchr(const void *s, int c, size_t n)
@@ -52,6 +53,17 @@ void* memset(void* bufptr, int value, size_t size) {
 		buf[i] = (unsigned char) value;
 	return bufptr;
 }
+char *strdup(const char * str){
+  size_t len = strlen(str) +1;
+  char *newstr = malloc(len);
+
+  if(newstr == NULL){
+      return NULL;
+  }
+  return memcpy(newstr,str,len);
+}
+
+
 
 int strcmp(const char *str1, const char *str2)
 {
