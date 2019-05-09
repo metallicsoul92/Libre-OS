@@ -46,7 +46,7 @@ bitset bitsetReverse(bitset *bits){
   return tmp;
 }
 bitset * bitsetPtrReverse(bitset * bits){
-  bitset * tmp;
+  bitset tmp;
 
   tmp.b1 = bits->b8;
   tmp.b2 = bits->b7;
@@ -57,7 +57,16 @@ bitset * bitsetPtrReverse(bitset * bits){
   tmp.b7 = bits->b2;
   tmp.b8 = bits->b1;
 
-  return tmp;
+  bits->b1 = tmp.b1;
+  bits->b2 = tmp.b2;
+  bits->b3 = tmp.b3;
+  bits->b4 = tmp.b4;
+  bits->b5 = tmp.b5;
+  bits->b6 = tmp.b6;
+  bits->b7 = tmp.b7;
+  bits->b8 = tmp.b8;
+
+  return bits;
 }
 
 

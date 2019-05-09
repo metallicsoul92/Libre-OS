@@ -35,10 +35,12 @@ $(KERNELBINDIR)/paging.o\
 $(KERNELBINDIR)/tty.o\
 $(KERNELBINDIR)/task.o\
 $(KERNELBINDIR)/cmos.o \
+$(KERNELBINDIR)/cpufeatures.o\
 $(KERNELBINDIR)/kernel.o
 
 DRIVERSOBJS=\
-$(DRIVERSBINDIR)/ata.o
+$(DRIVERSBINDIR)/ata.o\
+$(DRIVERSBINDIR)/fs/vfs/vfs.o
 
 LINK_LIST_ix86?=\
 $(KERNELASMBINDIR)/crti.o \

@@ -1,7 +1,12 @@
-#ifndef STDARG_H_
-#define STDARG_H_
+#ifndef LIBC_STDARG_H_
+#define LIBC_STDARG_H_
 
+
+#ifndef HAS_VARG
 typedef unsigned char * va_list;
+#define HAS_VARG 1
+#endif
+
 #define va_start(marker, last)  { marker = (va_list)&last + sizeof(last); }
 #define va_arg(marker, type)    *((type *)((marker += sizeof(type)) - sizeof(type)))
 

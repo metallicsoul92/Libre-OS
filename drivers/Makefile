@@ -6,7 +6,8 @@ LIBS?=
 BINDIR=../bin/drivers
 
 DRIVEROBJS=\
-ata.o
+ata.o\
+fs/vfs/vfs.o
 
 CFLAGS:=$(CFLAGS) -g -ffreestanding -Wall -Wextra
 

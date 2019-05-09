@@ -21,8 +21,8 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CPUID_H_
-#define CPUID_H_ 1
+#ifndef LIBC_CPUID_H_
+#define LIBC_CPUID_H_ 1
 
 
 /* %ecx */

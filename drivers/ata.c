@@ -1,9 +1,9 @@
- #include "../include/drivers/ata.h"
+#include "../include/drivers/ata.h"
 #include "../include/tty.h"
 #include "../include/inlineAssembly.h"
 #include "../libc/include/string.h"
 #include "../libc/include/stdint.h"
-#include "../include/config.h"
+
 
 struct ata_drive_info
 {
@@ -15,22 +15,19 @@ struct ata_drive_info
 
 static const int ata_base[4] = {
 	ATA_BASE0,
+	ATA_BASE0,
 	ATA_BASE1,
-	ATA_BASE2,
-	ATA_BASE3
+	ATA_BASE1
 };
 
- struct ata_drive_info drives[4];
+static struct ata_drive_info drives[4];
 
 
 void ata_reset(int id) {
-  #ifdef CONFIG_VERBOSE_KERNEL
-  printk("ATA Resetting ID: %d\n",id);
-  #endif
 	outb(ata_base[id] + ATA_CONTROL, ATA_CONTROL_RESET);
-	 sleep(5);
+	/*TODO: Implement */ sleep(5);
 	outb(ata_base[id] + ATA_CONTROL, 0);
-	 sleep(5);
+	/*TODO: Implement*/ sleep(5);
 }
 
 static int ata_wait(int id, int mask, int state) {
@@ -38,15 +35,7 @@ static int ata_wait(int id, int mask, int state) {
 	int time=0;
 	while(1) {
 		t = inb(ata_base[id] + ATA_STATUS);
-    #ifdef CONFIG_VERBOSE_KERNEL
-    printk("Ata Waiting...\n");
-    printk("input byte at: %d\n",ata_base[id] + ATA_STATUS);
-    printk("input byte result: %d\nTime : %d seconds\n",t,time);
-    #endif
 		if((t&mask) == state) {
-      #ifdef CONFIG_VERBOSE_KERNEL
-      printk("Ata Wait Returning, state == t&mask...\n");
-      #endif
 			return 1;
 		}
 		if(t&ATA_STATUS_ERR) {
@@ -54,7 +43,7 @@ static int ata_wait(int id, int mask, int state) {
 			ata_reset(id);
 			return 0;
 		}
-		if(time>=ATA_TIMEOUT*2)
+		if(time>=ATA_TIMEOUT*100)
 		{
 			printk("ATA timeout on drive %u", id);
 			ata_reset(id);
@@ -76,11 +65,7 @@ static void ata_pio_read(int id, void *buffer, int size) {
 
 static void ata_pio_write(int id, const void *buffer, int size) {
 	uint16_t *wbuffer = (uint16_t*)buffer;
-
 	while(size > 0) {
-#ifdef CONFIG_VERBOSE_KERNEL
-    printk("ata pio writing: %d\n",(int)*wbuffer);
-#endif
 		outw(ata_base[id] + ATA_DATA, *wbuffer);
 		wbuffer++;
 		size-=2;
@@ -134,9 +119,6 @@ static int ata_read_unlocked(int id, void *buffer, int nblocks, int offset) {
 int ata_read(int id, void *buffer, int nblocks, int offset) {
 	int result;
 	result = ata_read_unlocked(id, buffer, nblocks, offset);
-  #ifdef CONFIG_VERBOSE_KERNEL
-  printk("ATA Read Result: %d\n",result);
-  #endif
 	return result;
 }
 
@@ -242,12 +224,10 @@ static int ata_identify(int id, int command, void *buffer) {
 int ata_probe( int id, int *nblocks, int *blocksize, char *name ) {
 	uint16_t buffer[256];
 	char *cbuffer = (char*)buffer;
-  #ifdef CONFIG_VERBOSE_KERNEL
-  printk("ATA probe input byte at : %d\n",(ata_base[id]+ ATA_STATUS));
-  #endif
+
 	uint8_t t = inb(ata_base[id] + ATA_STATUS);
 	if(t == 0xff) {
-		printk("ATA probing: nothing attached on drive %d\n", id);
+		printk("ATA probing: nothing attached on drive %u\n", id);
 		drives[id].name="Not attached!";
 		drives[id].block_size=0;
 		drives[id].size=0;
@@ -257,17 +237,13 @@ int ata_probe( int id, int *nblocks, int *blocksize, char *name ) {
 	ata_reset(id);
 	memset(cbuffer,0,512);
 	if(ata_identify(id, ATA_COMMAND_IDENTIFY, cbuffer)) {
-
 		*nblocks = buffer[1] * buffer[3] * buffer[6];
 		*blocksize = 512;
  	} else if(ata_identify(id, ATAPI_COMMAND_IDENTIFY, cbuffer)) {
-    #ifdef CONFIG_VERBOSE_KERNEL
-    printk("ATA probe Setting nblocks to 33790\nSetting blocksize to 2048\n");
-    #endif
 		*nblocks = 337920;
 		*blocksize = 2048;
 	} else {
-		printk("ATA probing: identify command failed on drive %d\n", id);
+		printk("ATA probing: identify command failed on drive %u\n", id);
 		drives[id].name="Identify command failed! (Maybe nothing attached?)";
 		drives[id].block_size=0;
 		drives[id].size=0;
@@ -283,10 +259,10 @@ int ata_probe( int id, int *nblocks, int *blocksize, char *name ) {
 	}
 
 	cbuffer[256]=0;
-	strcpy(&cbuffer[54],name);
+	strcpy(name, &cbuffer[54]);
 	name[40] = 0;
-	printk("ATA probing: saving info to drive list, found disk on drive %d: %d MB.\n", id, (int)(*nblocks)*(*blocksize)/1024/1024);
-	printk("ATA device #%d: type: %s, size: %d Bytes, name: %s\n", id, (*blocksize)==512 ? "ATA disk" : "ATAPI CDROM", ((int)(*nblocks)*(*blocksize)), name);
+	printk("ATA probing: saving info to drive list, found disk on drive %u: %d MB.\n", id, (int)(*nblocks)*(*blocksize)/1024/1024);
+	printk("ATA device #%d: type: %s, size: %d MB, name: %s\n", id, (*blocksize)==512 ? "ATA disk" : "ATAPI CDROM", (int)(*nblocks)*(*blocksize)/1024/1024, name);
 	drives[id].name=name;
 	drives[id].block_size=*blocksize;
 	drives[id].size=*nblocks * *blocksize;

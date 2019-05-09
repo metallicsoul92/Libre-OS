@@ -2,12 +2,12 @@
 #define LIBC_SYS_TIME_H_
 
 #ifndef _HAS_SUSECONDS
-#define _HAS_SUSECONDS
+#define _HAS_SUSECONDS 1
 typedef int suseconds_t;
 #endif
 
 #ifndef _HAS_TIME
-#define _HAS_TIME
+#define _HAS_TIME 1
 typedef int time_t;
 #endif
 

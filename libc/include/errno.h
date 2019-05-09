@@ -1,5 +1,5 @@
-#ifndef ERRNO_H_
-#define ERRNO_H_
+#ifndef LIBC_ERRNO_H_
+#define LIBC_ERRNO_H_
 
 
 #ifdef __is_libk

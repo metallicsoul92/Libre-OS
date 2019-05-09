@@ -1,3 +1,4 @@
+#include "../include/config.h"
 #include "../include/internal.h"
 #include "../include/multiboot.h"
 #include "../include/tty.h"
@@ -12,27 +13,32 @@
 #include "../include/task.h"
 #include "../libc/include/string.h"
 #include "../include/drivers/ata.h"
+#include "../include/drivers/fs/vfs/vfs.h"
 /**
 * Kernel Information
 */
-
- _internal_kernel_info _kInfo = {{"Libre-OS","Alpha"} , {0,0,1,0}};
+ _internal_kernel_info _kInfo = {{"Libre-OS",VERSIONSTRING} ,
+                                {VERSIONMAJOR,VERSIONMINOR,
+                                  VERSIONBUG,VERSIONTWEAK} ,
+                                  NULL};
  _cpuidProf cpuidProf;
  _vmmu vmmu;
+
+fs_t initVFS;
 
 char versionString[32];
  void generateVersionString(_internal_kernel_version * v){
    const char * vInfo[4] = {STR(v.maj),STR(v.min),
                            STR(v.bug),STR(v.tweak)};
                    memset(versionString,0,sizeof(versionString));
-                   strcat(vInfo[0],versionString);
-                   strcat(".",versionString);
-                   strcat(vInfo[1],versionString);
-                   strcat(".",versionString);
-                   strcat(vInfo[2],versionString);
-                   strcat(".",versionString);
-                   strcat(vInfo[3],versionString);
-                   strcat(".",versionString);
+                   strcat(versionString,vInfo[0]);
+                   strcat(versionString,".");
+                   strcat(versionString,vInfo[1]);
+                   strcat(versionString,".");
+                   strcat(versionString,vInfo[2]);
+                   strcat(versionString,".");
+                   strcat(versionString,vInfo[3]);
+                   strcat(versionString,".");
 }
 /**
 *Multiboot Information
@@ -41,16 +47,20 @@ char versionString[32];
 
 int kernel_main(unsigned long magic, unsigned long addr){
 
+
+  //Initialization here
+   initializeTerminal();
+
 //Pre-Boot Shit
   if(magic != MULTIBOOT_BOOTLOADER_MAGIC){
-    printk("Error Multiboot magic invalid");
+    printk("Error Multiboot magic invalid\n");
+    printk("Expected %u : Result : %u\n",MULTIBOOT_BOOTLOADER_MAGIC,magic);
   }
 
   mbt =(multiboot_info_t *) addr;
 
-//Initialization here
- initializeTerminal();
- gdt_install();
+//More Initialization here
+  gdt_install();
  	idt_install();
  	isrs_install();
  	irq_install();
@@ -65,6 +75,8 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
 
 //Other Functions here
   printk("Welcome to %s     Version: %s\n",_kInfo.name.name,_kInfo.name.versionName);
+  detectArch(&_kInfo);
+  printk("Architecture : %s\n", _kInfo.archType);
   printk("Multiboot Flags: 0x%x\n",mbt->flags);
   printk("Multiboot addr : 0x%x\n", addr);
   printk("Multiboot Memory Low: 0x%x\nMultiboot Memory Upper: 0x%x\n",mbt->mem_lower,mbt->mem_upper);
@@ -87,9 +99,18 @@ getVendorString(vendorString,cpuidret[1],cpuidret[2],cpuidret[3]);
   initMem(&vmmu,mbt);
   paging_init();
   initTasking();
+  printk("VMMU Memory maps : %d\n",vmmu.availableMemAmount);
+  for(unsigned int i = 0; i < vmmu.availableMemAmount;i++){
+  printk("Memory Map #%d : Address : %X  Size: %U\n",
+            i,vmmu.availAddrStart[i],vmmu.availAddrSize[i]);
+  }
+  vfsInit();
+  initVFS.name = "Kernel Virtual FS";
+  vfsInstall(&initVFS);
+  
+  //ata_init();
 
-  //So ATA is kinda Reested right now i think? Idk....
-  ata_init();
+
 
 
   while(1){

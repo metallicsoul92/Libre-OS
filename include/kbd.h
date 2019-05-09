@@ -3,17 +3,9 @@
 
 #include "../libc/include/sys/cdefs.h"
 #include "../libc/include/string.h"
-#include "../libc/include/unistd.h"
 #include "tty.h"
 
-void reboot()
-{
-    uint8_t good = 0x02;
-    while (good & 0x02)
-        good = inb(0x64);
-    outb(0x64, 0xFE);
-    //halt();
-}
+
 
 unsigned char keyboard_map[128] =
 {
