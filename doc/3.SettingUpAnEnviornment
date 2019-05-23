@@ -1,0 +1,65 @@
+5/23/2019
+
+
+Setting Up An Enviornment.
+
+
+Requirements:
+
+1. A terminal/shell program. I use bash, on Debian GNU/Linux
+2. Cross-Compiler . i686-elf-gcc . Ill get into this down the line
+3. Make
+4. grub
+5. xorriso
+
+
+Resources :
+Building a Cross Compiler :
+https://wiki.osdev.org/GCC_Cross-Compiler
+
+
+
+1. Terminal/shell. This is on any operating system, i would suggest developing
+on a Linux Distribution, as bash is normally installed. The configure script is
+written in bash, so it would probably be useful to have this
+
+2. Cross-compiler. Currently we are targetting i686-elf, however in the future
+I plan on supporting a wide range of architectures . You can learn how to build
+one from the resource provided above in the link. It is a little lengthy, but it
+gives you a solid understanding as to how gcc itself is built. There are prebuilt
+toolchains for different architectures at the bottom, if you plan on downloading
+one, get the latest version of it (as i will be building most likely off gcc
+version 7.1 ).
+
+3. Make. Not much really to talk about here, hopefully you have a solid
+understanding of how to use the makefiles. Obviously you will need to add to it
+when you work on new files. It is quite simple, when you add a new file, find
+the closest makefile to it and just add the object to the object list.
+
+4. Grub. This is the bootloader we will be using to boot the kernel. It supports
+module loading, which is a possible idea in the future
+
+5. Xorriso. This is the tool that will burn the isodir directory into an ISO
+file.
+
+
+  You can use any IDE/Text editor you like, just if you use an IDE, dont build
+with that said IDE, or else you may not get the desired output. When you
+initially fork the repository, you will need to run some scripts from the scripts
+directory.
+
+These include :
+
+  1. genbindir.sh <- Script to generate the binary directory for the project to
+                      be built to.
+  2. configure.sh <- This will run a configure script that will write out a
+                      config.h file into the kernel. This will be used to
+                      configure features of the kernel. We may need to remake
+                      this eventually.
+
+  3. go into the tools/arch/ARCH directory (iX86 for i686) and run the gencrt.sh
+     to generate the crtbegin and crtend from your cross compiler .
+
+  4.go back to your scripts directory and run build-ARCH.sh . This will build
+    the project. Instead of ARCH, write the
+    architecture name (for i686, i use ix86) .
