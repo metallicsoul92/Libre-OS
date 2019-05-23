@@ -6,6 +6,8 @@ as well as the philosophies of The GNU Project.
 
 # Requirements to build
     An i686-elf-gcc cross compiler. (unless your using an actual i686 processor)
+    xorriso
+    Make
 
 # To Install
    First you may want to run the configure script. At the moment it  is targeted
