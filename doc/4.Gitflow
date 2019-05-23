@@ -1,0 +1,27 @@
+5/22/2019
+
+
+Git Flow:
+
+Author : Clim Jark <climjark@protonmail.com>
+
+
+Branches:
+master - this will be pushed to once all the bugs and goals of the version are
+         met.
+
+develop - this is the main development area . All the commits will be pushed to here
+
+features/* - When working on a particular feature/request, create a branch of
+             that specific feature. For example, if i am working on implementing
+             ext4, i may have a branch, pulled from develop, named features/ext4
+
+bugfix/*  - when working on a bug within develop , create a bugfix branch with that
+            bug.
+
+
+The features and bugfix branches should be closed once it is merged back into
+develop. This allows for multiple people to work on multiple things at the same
+time.
+
+I need to start adhering to this rule....

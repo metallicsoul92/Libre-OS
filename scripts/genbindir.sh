@@ -9,3 +9,5 @@ mkdir -p bin/kernel/src
 mkdir -p bin/libc
 mkdir -p bin/libc/src
 mkdir -p bin/libc/src/sys
+mkdir -p bin/drivers/fs
+mkdir -p bin/drivers/fs/vfs
