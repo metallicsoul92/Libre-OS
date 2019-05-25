@@ -1,0 +1,10 @@
+Kernel Todo List:
+
+
+Updated 5/25/2019
+
+1. Set up scheduler
+2. Get into userspace
+3. Setup systemd or another init type program.
+
+4. Implementing Semaphores and Mutexes

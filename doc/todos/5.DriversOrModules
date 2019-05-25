@@ -1,0 +1,21 @@
+Drivers and Modules TODO List:
+
+Updated 5/25/2019
+
+
+
+
+1. Filesystems:
+    a. Finish Implementing VFS
+    b. Work on Implmenenting ISO9660 (CD File system)
+    c. Work on Implementing Ext4
+    d. Think of other File systems to implement
+
+2.  Loaders:
+    a. Finish Implementing ELF loader
+    b. Work on Implementing PE loader
+    c. Work on Implementing Mach-o loader
+
+3. Misc Drivers:
+    a. Work on Implementing audio drivers ?
+    b. Think of other drivers?
