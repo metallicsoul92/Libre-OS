@@ -1,0 +1,14 @@
+LibC Runtime TODO List:
+
+
+Updated 5/25/2019
+
+
+
+1. Standard C Implementation :
+  Alot of functions have yet to be implemented, either due to lack of kernel
+necessities , or knowledge of implementing them.
+
+2. POSIX C Implementation :
+  The library should be posix compliant for easier portability (userspace
+programs)
