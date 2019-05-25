@@ -7,7 +7,7 @@ Updated 5/25/2019
 
 1. Filesystems:
     a. Finish Implementing VFS
-    b. Work on Implmenenting ISO9960 (CD File system)
+    b. Work on Implmenenting ISO9660 (CD File system)
     c. Work on Implementing Ext4
     d. Think of other File systems to implement
 
@@ -19,5 +19,3 @@ Updated 5/25/2019
 3. Misc Drivers:
     a. Work on Implementing audio drivers ?
     b. Think of other drivers?
-
-    
