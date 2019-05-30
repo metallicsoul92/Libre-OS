@@ -1,7 +1,7 @@
 CFLAGS= -O2 -g -ffreestanding -Wall -Wextra
 
-PHONY+= build-ix86 build-x86_64 build-arm
-PHONY+= link-ix86 link-x86_64 link-arm
+PHONY+= build-ix86 build-ix86-host build-x86_64 build-arm
+PHONY+= link-ix86 link-ix86-host link-x86_64 link-arm
 PHONY+= clean
 .PHONY= $(PHONY)
 
@@ -57,9 +57,19 @@ build-ix86:
 	cd kernel && make ix86 CC=i686-elf-gcc AS=i686-elf-as LD=i686-elf-ld
 	cd drivers && make CC=i686-elf-gcc LD=i686-elf-ld
 
+build-ix86-host:
+	cd libc && make all 
+	cd kernel && make ix86 
+	cd drivers && make 
+
 link-ix86:
 	i686-elf-gcc -T $(TOOLSARCHDIR)/iX86/ix86.ld -o $(BINDIR)/kernel.ix86 $(CFLAGS) $(LINK_LIST_ix86)
 	./scripts/confirmMB.sh
+
+link-ix86-host:
+	CC -T $(TOOLSARCHDIR)/iX86/ix86.ld -o $(BINDIR)/kernel.ix86 $(CFLAGS) $(LINK_LIST_ix86)
+	./scripts/confirmMB.sh
+
 
 clean:
 	cd include && rm config.h
