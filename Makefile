@@ -67,7 +67,7 @@ link-ix86:
 	./scripts/confirmMB.sh
 
 link-ix86-host:
-	CC -T $(TOOLSARCHDIR)/iX86/ix86.ld -o $(BINDIR)/kernel.ix86 $(CFLAGS) $(LINK_LIST_ix86)
+	${CC} -T $(TOOLSARCHDIR)/iX86/ix86.ld -o $(BINDIR)/kernel.ix86 $(CFLAGS) $(LINK_LIST_ix86)
 	./scripts/confirmMB.sh
 
 
