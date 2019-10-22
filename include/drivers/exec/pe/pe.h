@@ -18,7 +18,7 @@ struct dos_header{
   void *ss; //2 byte value
   void *sp; //2 byte value
   int16_t checksum;
-  void *ip; //2 byte value
+  void *is; //2 byte value
   void *ip; //2 byte value
   int16_t relocpos;
   int16_t noverlay;
