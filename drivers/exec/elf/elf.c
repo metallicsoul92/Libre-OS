@@ -18,7 +18,7 @@ unsigned long loadELF(void * elf){
         if(section.sh_type == 1){
           printf("ELF: Loading Segment at : %x\n",section.sh_addr);
           for(unsigned int j = 0; j < section.sh_size; j++){
-          ((char*)section.sh_addr)[j] = ((char*)buffer + section.sh_offset)[e];
+          ((char*)section.sh_addr)[j] = ((char*)elf + section.sh_offset)[e];
           }
         }else{
           printf("ELF:Not Copying Segment.\n");
