@@ -7,7 +7,8 @@ BINDIR=../bin/drivers
 
 DRIVEROBJS=\
 ata.o\
-fs/vfs/vfs.o
+fs/vfs/vfs.o\
+exec/elf/elf.o
 
 CFLAGS:=$(CFLAGS) -g -ffreestanding -Wall -Wextra
 
