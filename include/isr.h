@@ -78,7 +78,7 @@ void isr_handler(regs_t regs){
 }
 
 
-void fault_handler(struct regs * r) {
+void fault_handler(regs_t * r) {
 	irq_handler_t handler = isr_routines[r->int_no];
 	if (handler) {
 		handler(r);

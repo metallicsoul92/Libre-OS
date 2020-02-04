@@ -11,6 +11,7 @@
 #endif
 
 
+
 #define PRIORITY_LOWEST       1
 #define PRIORITY_LOWER        2
 #define PRIORTIY_LOW          3
@@ -34,26 +35,12 @@
 #if __IX86__ == 1
 extern void initTasking();
 
-typedef struct {
-    uint32_t eax;
-    uint32_t ebx;
-    uint32_t ecx;
-    uint32_t edx;
-    uint32_t esi;
-    uint32_t edi;
-    uint32_t esp;
-    uint32_t ebp;
-    uint32_t eip;
-    uint32_t eflags;
-    uint32_t cr3;
-} reg_t;
-
-
+#include "registers.h"
 //I Still dont know how i should go about this lol, lets see how well this works
 //Im deciding to use not only a doubly linked list, but kinda like a map type
 //data structure?
 typedef struct Task {
-    reg_t regs;
+    regs_t regs;
     uint8_t priority;
     uint8_t state;
     uint8_t type;

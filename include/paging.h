@@ -7,7 +7,7 @@
 
 
 
-#ifdef CONFIG_IX86_NON_PAE_
+#ifdef CONFIG_NON_PAE_
     #define PAGE_SHIFT 12
     #define PAGE_SIZE ((uint32_t)1<<PAGE_SHIFT)
     #define BPP 32
@@ -69,7 +69,7 @@
 
 //Ok so 64-bit structure, bits 36-63 are ignored... 27 bits ....
 //Physical address is extended to 24 bytes
-#ifdef CONFIG_IX86_PAE_
+#ifdef CONFIG_PAE_
 
 typedef struct _page_table_entry_int{
   uint8_t present:1;

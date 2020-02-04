@@ -1,24 +1,26 @@
-#ifndef ARCH_I386_REGISTERS_H
-#define ARCH_I386_REGISTERS_H
+#ifndef REGISTERS_H
+#define REGISTERS_H
 
+#include  "config.h"
 #include "../libc/include/stdio.h"
 #include "../libc/include/string.h"
 
 
+#ifdef __IX86__
+#include "../arch/iX86/registers.h"
+#endif
 
-struct regs {
-	unsigned int gs, fs, es, ds;
-	unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
-	unsigned int int_no, err_code;
-	unsigned int eip, cs, eflags, useresp, ss;
-};
+#ifdef _X86_64_
+#include "../arch/x86_64/registers.h"
+#endif
 
-typedef struct regs regs_t;
+typedef struct registers regs_t;
+
 
 
 // IRQ handling
-typedef void (*irq_handler_t) (struct regs *);
-typedef int (*irq_handler_chain_t) (struct regs *);
+typedef void (*irq_handler_t) (regs_t *);
+typedef int (*irq_handler_chain_t) (regs_t *);
 
 //Kernel Symbols
 typedef struct {
@@ -46,4 +48,4 @@ inline void (* symbol_find(const char * name))(void) {
 
 
 
-#endif// ARCH_I386_REGISTERS_H
+#endif//REGISTERS_H

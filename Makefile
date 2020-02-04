@@ -26,7 +26,6 @@ $(KERNELASMBINDIR)/idt.o \
 $(KERNELASMBINDIR)/irq.o \
 $(KERNELASMBINDIR)/isr.o \
 $(KERNELASMBINDIR)/switch.o\
-$(KERNELASMBINDIR)/paging.o
 
 KERNELOBJS=\
 $(ASMOBJS) \
@@ -40,7 +39,8 @@ $(KERNELBINDIR)/kernel.o
 
 DRIVERSOBJS=\
 $(DRIVERSBINDIR)/ata.o\
-$(DRIVERSBINDIR)/fs/vfs/vfs.o
+$(DRIVERSBINDIR)/fs/vfs/vfs.o\
+$(DRIVERSBINDIR)/exec/elf/elf.o
 
 LINK_LIST_ix86?=\
 $(KERNELASMBINDIR)/crti.o \

@@ -26,6 +26,9 @@ CFLAGS:=$(CFLAGS) -g -ffreestanding -Wall -Wextra
 ix86: $(KERNOBJS)
 	cd ${ARCHDIR}/iX86 && make
 
+x86_64: $(KERNOBJS)
+	cd ${ARCHDIR}/x86_64 && make
+
 clean:
 	cd ${BINDIR}/asm && rm *
 	cd ${BINDIR} && rm *.o

@@ -36,7 +36,7 @@ void setupBasicPaging(){
   #endif
 
   **/
-#ifdef CONFIG_IX86_NON_PAE_
+#ifdef CONFIG_NON_PAE_
 
 static page_dir_t * page_directory = 0;
 //pageTableEntry_t * last_page = 0;
@@ -45,7 +45,7 @@ static uint32_t page_dir_loc = 0;
 #endif
 
 
-#ifdef CONFIG_IX86_PAE_
+#ifdef CONFIG_PAE_
 //OSDEV STUFF
 static ptpd_t * pageDirPtrTab = 0;
 uint64_t page_dir_ptr_tab[4] __attribute__((aligned(0x20))); // must be aligned to (at least)0x20, ...
@@ -85,7 +85,7 @@ static uint32_t* last_page = 0;
 */
 
 void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys){
-	#ifdef CONFIG_IX86_NON_PAE_
+	#ifdef CONFIG_NON_PAE_
 		uint16_t id = virt >> 22;
 		#ifdef CONFIG_VERBOSE_KERNEL
 			printk("id 0x%x, virtual: 0x%x\n", id, virt);
@@ -107,7 +107,7 @@ void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys){
 		#endif // verbose kernel output
 	#endif //Config NON PAE for ix86
 
-	#ifdef CONFIG_IX86_PAE_
+	#ifdef CONFIG_PAE_
 		uint16_t id = virt >> 22;
 
 			/* Ok Hear me out..... Im gonna try to determine via currentTab and currentDir
@@ -131,11 +131,11 @@ void paging_map_virtual_to_phys(uint32_t virt, uint32_t phys){
 }
 
 void paging_enable(){
-	#ifdef CONFIG_IX86_PAE_
+	#ifdef CONFIG_PAE_
 		asm volatile ("movl %cr4, %eax; bts $5, %eax; movl %eax, %cr4"); // set bit5 in CR4 to enable PAE
 		asm volatile("mov %%eax, %%cr3": :"a"(&page_dir_ptr_tab));
 	#endif
-	#ifdef CONFIG_IX86_NON_PAE_
+	#ifdef CONFIG_NON_PAE_
 		asm volatile("mov %%eax, %%cr3": :"a"(page_dir_loc));
 	#endif
 		asm volatile("mov %cr0, %eax");
@@ -147,7 +147,7 @@ void paging_init(){
   //kvmmu.kheap_mem_end
 	printk("Setting up paging\n");
 
-	#ifdef CONFIG_IX86_NON_PAE_
+	#ifdef CONFIG_NON_PAE_
 	printk("Size of Page directory structure : %d\n",sizeof(page_dir_t));
 	page_directory = (page_dir_t*)kvmmu.kheap_mem_end;
 	//page_directory = (page_dir_t*)kmalloc(sizeof(page_dir_t));
@@ -175,9 +175,9 @@ void paging_init(){
 		printk("Paging was successfully enabled!\n");
 	#endif
 
-	#endif //CONFIG_IX86_NON_PAE_
+	#endif //CONFIG_NON_PAE_
 
-	#ifdef CONFIG_IX86_PAE_
+	#ifdef CONFIG_PAE_
 		page_dir_ptr_tab[0] = (uint64_t)&page_dir | 1; // set the page directory into the PDPT and mark it present
 		page_dir[0] = (uint64_t)&page_tab | 3; //set the page table into the PD and mark it present/writable
 		pageDirPtrTab = &page_dir_ptr_tab;

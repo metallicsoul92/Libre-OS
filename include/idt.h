@@ -2,7 +2,6 @@
 #define IDT_H
 
 #include "../libc/include/sys/cdefs.h"
-	#ifdef __IX86__
 typedef struct {
 
 	uint16_t base_low;
@@ -50,5 +49,4 @@ void idt_install(void) {
 
 #undef ENTRY
 
-#endif
 #endif //idt

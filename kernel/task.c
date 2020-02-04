@@ -1,5 +1,6 @@
 #include "../include/task.h"
 #include "../include/kmem.h"
+#include "../include/registers.h"
 
 #ifndef HAS_NULL
 #define NULL ((void*)0)
@@ -7,13 +8,12 @@
 #endif
 
 
-#if __IX86__ == 1
+#ifdef __IX86__
 
 static task_t *runningTask;
 static task_t mainTask;
 static task_t otherTask;
 
-extern void switchTask(reg_t *old,reg_t *new); // The function which actually switches
 
 static void otherMain() {
     printk("Hello multitasking world!"); // Not implemented here...

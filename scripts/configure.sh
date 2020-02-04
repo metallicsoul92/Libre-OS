@@ -23,14 +23,15 @@ else
     mtEnabled="n"
 fi
 
-echo -n "Do you want PAE Support? (y/n)?"
-read answer
-if echo "$answer" | grep -iq "y" ;then
+if echo "$arch" | grep -q "ix86"; then
+  echo -n "Do you want PAE Support? (y/n)?"
+  read answer
+  if echo "$answer" | grep -iq "y" ;then
     PAE="y"
-else
+  else
     PAE="n"
+  fi
 fi
-
 echo -n "Do you want a Verbose Kernel? (y/n)?"
 printf "\n     Use this for extra output\n"
 read answer
@@ -82,19 +83,23 @@ if echo "$arch" | grep -iq "ix86" ;then
   if echo "$PAE" | grep -iq "y" ;then
     PAEstr="ix86 PAE enabled"
     echo "/** Architecture PAE Support **/" >> config.h.tmp
-    echo "#define CONFIG_IX86_PAE_" >> config.h.tmp
-    echo "#undef CONFIG_IX86_NON_PAE_" >>config.h.tmp
+    echo "#define CONFIG_PAE_ 1" >> config.h.tmp
+    echo "#undef CONFIG_NON_PAE_" >>config.h.tmp
   else
     PAEstr="ix86 PAE not enabled"
     echo "/** Architecture PAE Support **/" >> config.h.tmp
-    echo "#undef CONFIG_IX86_PAE_" >> config.h.tmp
-    echo "#define CONFIG_IX86_NON_PAE_" >> config.h.tmp
+    echo "#undef CONFIG_PAE_" >> config.h.tmp
+    echo "#define CONFIG_NON_PAE_ 1" >> config.h.tmp
   fi
   echo "" >> config.h.tmp
 elif echo "$arch" | grep -iq "x86_64" ;then
   echo "#undef __IX86__" >> config.h.tmp
   echo "#define __X86_64__ 1" >> config.h.tmp
   echo "#undef __ARM__" >> config.h.tmp
+    PAEstr="PAE Enabled on x86_64"
+    echo "/** Architecture PAE Support **/" >> config.h.tmp
+    echo "#define CONFIG_PAE_ 1" >> config.h.tmp
+    echo "#undef CONFIG_NON_PAE_" >> config.h.tmp
 else
   echo "#undef __IX86__" >> config.h.tmp
   echo "#undef __X86_64__" >> config.h.tmp
@@ -122,7 +127,7 @@ fi
 echo "/**Verbose Kernel Keyboard:**/" >> config.h.tmp
 if echo "$VKK" | grep -iq "y" ;then
   vkkStr="Verbose Kernel keyboard defined"
-  echo "#define CONFIG_VERBOSE_KERNEL_KEYBOARD" >> config.h.tmp
+  echo "#define CONFIG_VERBOSE_KERNEL_KEYBOARD 1" >> config.h.tmp
 else
   vkkStr="Verbose Kernel Kernel not defined"
   echo "#undef CONFIG_VERBOSE_KERNEL_KEYBOARD" >> config.h.tmp

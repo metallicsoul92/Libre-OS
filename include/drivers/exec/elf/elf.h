@@ -19,7 +19,7 @@ typedef uint64_t Elf64_Off;
 typedef int32_t Elf64_Sword;
 typedef uint32_t Elf64_Word;
 typedef int64_t Elf64_Sxword;
-typedef uint364_t Elf64_Xword;
+typedef uint64_t Elf64_Xword;
 //NOTE: unsigned char is also defined but already in C Library
 
 

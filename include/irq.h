@@ -143,7 +143,7 @@ void irq_ack(size_t irq_no) {
 	outb(PIC1_COMMAND, PIC_EOI);
 }
 
-void irq_handler(struct regs *r) {
+void irq_handler(regs_t *r) {
 	/* Disable interrupts when handling */
 	int_disable();
 	if (r->int_no <= 47 && r->int_no >= 32) {
