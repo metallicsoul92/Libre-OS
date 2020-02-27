@@ -12,10 +12,10 @@ typedef long unsigned int size_t;
 #define HAS_SIZE_T 1
 #endif
 
-#ifdef __IX86__
-#include "../arch/iX86/mm.h"
+
+#include "mm.h"
  _vmmu kvmmu;
-#endif
+
 
 uint32_t kmalloc_int(uint32_t sz, int align, uint32_t *phys);
 uint32_t kmalloc_a(uint32_t sz);

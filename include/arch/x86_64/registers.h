@@ -5,9 +5,7 @@
 struct registers{
 
   bit_t rax,rbx,rcx,rdx,rsi,rdi,r8,r9,r10,r11,r12,r13,r14,r15;
-
- unsigned short rbp;
-
+  bit_t rbp;
  unsigned short cs;
  unsigned short ds;
  unsigned short es;

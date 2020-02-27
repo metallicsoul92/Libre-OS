@@ -5,11 +5,11 @@
 #include "config.h"
 
 #ifdef __IX86__
-#include "../arch/iX86/task.h"
+#include "arch/ix86/task.h"
 #endif
 
 #ifdef __X86_64__
-#include "../arch/x86_64/task.h"
+#include "arch/x86_64/task.h"
 #endif
 
 

@@ -1,5 +1,5 @@
-#ifndef ARCH_I386_REGISTERS_H
-#define ARCH_I386_REGISTERS_H
+#ifndef ARCH_IX86_REGISTERS_H
+#define ARCH_IX86_REGISTERS_H
 
 
 struct registers {

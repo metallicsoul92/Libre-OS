@@ -7,11 +7,11 @@
 
 
 #ifdef __IX86__
-#include "../arch/iX86/registers.h"
+#include "arch/ix86/registers.h"
 #endif
 
 #ifdef _X86_64_
-#include "../arch/x86_64/registers.h"
+#include "arch/x86_64/registers.h"
 #endif
 
 typedef struct registers regs_t;

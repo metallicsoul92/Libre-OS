@@ -1,6 +1,6 @@
 #include "../include/config.h"
 #include "../include/paging.h"
-#include "../arch/iX86/mm.h"
+#include "../include/mm.h"
 #include "../libc/include/sys/cdefs.h"
 #include "../include/inlineAssembly.h"
 #include "../include/tty.h"

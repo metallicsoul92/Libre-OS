@@ -1,12 +1,11 @@
-#ifndef IX86_MM_H
-#define IX86_MM_H
+#ifndef ARCH_IX86_MM_H
+#define ARCH_IX86_MM_H
 
-#include "../../include/config.h"
-
-#include "../../include/multiboot.h"
+#include "../../config.h"
+#include "../../multiboot.h"
 
 #ifndef HAS_CDEFS
-#include "../../libc/include/sys/cdefs.h"
+#include "../../../libc/include/sys/cdefs.h"
 #define HAS_CDEFS 1
 #endif
 
