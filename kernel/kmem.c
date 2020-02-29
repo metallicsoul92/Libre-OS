@@ -4,35 +4,40 @@
 #include "../libc/include/stddef.h"
 #include "../include/tty.h"
 
-#ifdef __IX86__
- _vmmu kvmmu;
-#endif
+_vmmu kvmmu;
 #define PMAP_SIZE 32768
 
 
-// end is defined in the linker script.
+#ifdef __IX86__
+static uint32_t pmap[PMAP_SIZE];
 extern uint32_t kernel_end;
 extern uint32_t kernel_begin;
 uint32_t placement_address = (uint32_t)&kernel_end;
+#endif
 
-static unsigned int pmap[PMAP_SIZE];
+#ifdef __X86_64__
+static uint64_t pmap[PMAP_SIZE];
+extern uint64_t kernel_end;
+extern uint64_t kernel_begin;
+uint64_t placement_address = (uint64_t)&kernel_end;
+#endif
 
 
 
 void pmmfree(void *address){
-  unsigned int idx = (((uint32_t)address)/4096);
-  pmap[idx/32] |= (1 << (idx % 32));
+  MEMTYPE idx = (((MEMTYPE)address)/4096);
+  pmap[idx/MEMBITS] |= (1 << (idx % MEMBITS));
 }
 
 void pmmmark(void *address){
-  unsigned int idx = (((uint32_t)address)/4096);
-  pmap[idx/32] &= ~(1 << ((uint32_t)idx % 32));
+  MEMTYPE idx = (((MEMTYPE)address)/4096);
+  pmap[idx/MEMBITS] &= ~(1 << ((MEMTYPE)idx % MEMBITS));
 }
 
-uint32_t pmmcount(){
-  uint32_t available = 0;
-  for(uint32_t i = 0; i < PMAP_SIZE/32;i++){
-    for(uint32_t j = 0; j <32; j++){
+MEMTYPE pmmcount(){
+  MEMTYPE available = 0;
+  for(MEMTYPE i = 0; i < PMAP_SIZE/MEMBITS;i++){
+    for(MEMTYPE j = 0; j <MEMBITS; j++){
       if(pmap[i] &(1<<j)){
         available++;
       }
@@ -42,13 +47,13 @@ uint32_t pmmcount(){
 }
 
 void *pmmAlloc(){
-  int32_t x,y;
+  MEMTYPE x,y;
   for(x = 0; x < PMAP_SIZE; x++){
     if(pmap[x] !=0){
-      for(y = 0; y < 32; y++){
+      for(y = 0; y < MEMBITS; y++){
         if(pmap[x] &(1 << y)){
           pmap[x] & ~(1 << y);
-            return (void*)((x * 32 + y) * 4096);
+            return (void*)((x * MEMBITS + y) * 4096);
         }
       }
     }
@@ -56,7 +61,7 @@ void *pmmAlloc(){
   return NULL;
 }
 
-uint32_t kmalloc_int(uint32_t sz, int align, uint32_t *phys)
+MEMTYPE kmalloc_int(MEMTYPE sz, int align, MEMTYPE *phys)
 {
     // This will eventually call malloc() on the kernel heap.
     // For now, though, we just assign memory at placement_address
@@ -72,33 +77,33 @@ uint32_t kmalloc_int(uint32_t sz, int align, uint32_t *phys)
     {
         *phys = placement_address;
     }
-    uint32_t tmp = placement_address;
+    MEMTYPE tmp = placement_address;
     placement_address += sz;
     return tmp;
 }
 
-uint32_t kmalloc_a(uint32_t sz)
+MEMTYPE kmalloc_a(MEMTYPE sz)
 {
     return kmalloc_int(sz, 1, 0);
 }
 
-uint32_t kmalloc_p(uint32_t sz, uint32_t *phys)
+MEMTYPE kmalloc_p(MEMTYPE sz, MEMTYPE *phys)
 {
     return kmalloc_int(sz, 0, phys);
 }
 
-uint32_t kmalloc_ap(uint32_t sz, uint32_t *phys)
+MEMTYPE kmalloc_ap(MEMTYPE sz, MEMTYPE *phys)
 {
     return kmalloc_int(sz, 1, phys);
 }
 
-uint32_t kmalloc(uint32_t sz)
+MEMTYPE kmalloc(MEMTYPE sz)
 {
     return kmalloc_int(sz, 0, 0);
 }
 
-uint32_t kcalloc(uint32_t sz){
-  return (uint32_t)memset(kmalloc(sz),0,sz);
+MEMTYPE kcalloc(MEMTYPE sz){
+  return (MEMTYPE)memset(kmalloc(sz),0,sz);
 }
 
 
@@ -134,8 +139,8 @@ void initMem(_vmmu * vmmu , multiboot_info_t * mb ){
 
                   if(mmap->type ==1){
 
-                    uint32_t addr = mmap->addr;
-                    uint32_t mmend = (uint8_t*)addr + mmap->len;
+                    MEMTYPE addr = mmap->addr;
+                    MEMTYPE mmend = (uint8_t*)addr + mmap->len;
                       while(addr < mmend){
                         pmmfree((void*)addr);
                         addr += 0x1000;
@@ -152,22 +157,22 @@ void initMem(_vmmu * vmmu , multiboot_info_t * mb ){
                 }
 
 
-                uint32_t kPageSetup = &kernel_begin;
+                MEMTYPE kPageSetup = &kernel_begin;
 
-                while(kPageSetup < (uint32_t)&kernel_end){
+                while(kPageSetup < (MEMTYPE)&kernel_end){
                   pmmmark((void*)kPageSetup);
                   kPageSetup += 0x1000;
                 }
 
-                uint32_t other = (uint32_t)0x00;
-                uint32_t otherEnd = (uint32_t)0x800000;
+                MEMTYPE other = (uint32_t)0x00;
+                MEMTYPE otherEnd = (uint32_t)0x800000;
                 while(other < otherEnd){
                   pmmmark((void*)other);
                   other +=0x1000;
                 }
 
 
-                vmmu->kmem_end = (uint32_t)&kernel_end;
+                vmmu->kmem_end = (MEMTYPE)&kernel_end;
                 vmmu->heap_begin = vmmu->kmem_end + 0x1000;
                 vmmu->kheap_mem_end = 0x400000;
                 placement_address = vmmu->kheap_mem;
@@ -263,7 +268,7 @@ vm_entry_t * addressToEntry(void *address){
 
 void vm_entry_free(void *address){
     vm_entry_t *entry = addressToEntry(address);
-    uint32_t flags = entry->flags;
+    MEMTYPE flags = entry->flags;
     vm_entry_t *prev = prevEntry(entry);
     prev->next = entry->next;
     entry->next = NULL;

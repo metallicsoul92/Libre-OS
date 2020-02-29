@@ -16,6 +16,12 @@ struct __vmmu_{
   uint64_t kheap_mem;
   uint64_t kheap_mem_end;
   uint64_t heap_end;
+  uint64_t availAddrStart[6];
+  uint64_t availAddrSize[6];
+  uint8_t availableMemAmount;
+  
+    uint64_t *_pmap;
+    unsigned int initramamount;
 };
 
 

@@ -41,7 +41,7 @@ uint32_t kcalloc(uint32_t sz);
 struct vm_entry {
   uint32_t header;
   uint32_t flags; // marked as kernel, or User, permissions possibily and if free
-  uint32_t size;
+  MEMTYPE size;
   void **address;
   uint32_t footer;
   struct vm_entry *next;
@@ -50,8 +50,8 @@ struct vm_entry {
 typedef struct vm_entry vm_entry_t;
 
 struct vm_manager{
-  uint32_t size;
-  uint32_t used;
+  MEMTYPE size;
+  MEMTYPE used;
   vm_entry_t * head;
   vm_entry_t * tail;
   vm_entry_t * freed;
